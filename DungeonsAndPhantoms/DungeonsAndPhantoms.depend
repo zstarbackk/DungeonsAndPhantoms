@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1757536615 source:c:\users\isaac\onedrive\documents\dungeonsandphantoms\dungeonsandphantoms\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<time.h>
+	<unistd.h>
+
