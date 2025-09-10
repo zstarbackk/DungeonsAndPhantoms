@@ -4,41 +4,6 @@
 #include <time.h>
 #include <unistd.h>
 
-// Estructuras de datos
-typedef struct {
-    int filas;
-    int columnas;
-    int vidas_inicio;
-    int max_fantasmas;
-    int max_premios;
-    int max_vidas_extra;
-} Configuracion;
-
-typedef struct {
-    int x;
-    int y;
-} Posicion;
-
-typedef struct {
-    char **tablero;
-    int filas;
-    int columnas;
-    Posicion entrada;
-    Posicion salida;
-    Posicion jugador;
-    Posicion *fantasmas;
-    int num_fantasmas;
-    Posicion *premios;
-    int num_premios;
-    Posicion *vidas_extra;
-    int num_vidas_extra;
-} Laberinto;
-
-typedef struct {
-    int vidas;
-    int puntos;
-    int premios_capturados;
-} EstadoJugador;
 
 // Prototipos de funciones
 void leerConfiguracion(Configuracion *config);
