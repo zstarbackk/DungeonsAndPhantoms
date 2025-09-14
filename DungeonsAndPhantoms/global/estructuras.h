@@ -1,5 +1,9 @@
 #ifndef ESTRUCTURAS_H_INCLUDED
 #define ESTRUCTURAS_H_INCLUDED
+
+///Def err
+#define LAB_ERR -1
+
 ///Macros
 #define min(a,b) ((a)<(b)?(a):(b))
 #define max(a,b) ((a)>(b)?(a):(b))
@@ -36,16 +40,16 @@ typedef struct {
     char **tablero;
     int filas;
     int columnas;
-    Posicion entrada;
-    Posicion salida;
-    Posicion jugador;
-    Posicion *fantasmas;
+    tPosicion entrada;
+    tPosicion salida;
+    tPosicion jugador;
+    tPosicion *fantasmas;
     int numFantasmas;
-    Posicion *premios;
+    tPosicion *premios;
     int numPremios;
-    Posicion *vidasExtra;
+    tPosicion *vidasExtra;
     int numVidasExtra;
-} tJuego;
+} tLaberinto;
 
 typedef struct {
     int vidas;
@@ -56,4 +60,5 @@ typedef struct {
 typedef struct{
     char usuario[20];
 }tJugador;
+
 #endif // ESTRUCTURAS_H_INCLUDED

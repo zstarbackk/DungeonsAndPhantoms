@@ -31,6 +31,21 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Linker>
+			<Add library="ws2_32" />
+		</Linker>
+		<Unit filename="global/conexion.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="global/conexion.h" />
+		<Unit filename="global/estructuras.h" />
+		<Unit filename="global/juego.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="global/laberinto.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="global/laberinto.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
