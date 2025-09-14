@@ -1,10 +1,6 @@
 # depslib dependency file v1.0
-1757536615 source:c:\users\isaac\onedrive\documents\dungeonsandphantoms\dungeonsandphantoms\main.c
-	<stdio.h>
-	<stdlib.h>
-	<string.h>
-	<time.h>
-	<unistd.h>
+1757852807 source:c:\users\isaac\onedrive\documents\dungeonsandphantoms\dungeonsandphantoms\main.c
+	"global/laberinto.h"
 
 1757720090 source:c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\global\laberinto.c
 	"laberinto.h"
@@ -33,4 +29,29 @@
 	<winsock2.h>
 	<stdio.h>
 	<string.h>
+
+1757852807 source:c:\users\isaac\onedrive\documents\dungeonsandphantoms\dungeonsandphantoms\global\conexion.c
+	"conexion.h"
+
+1757852807 c:\users\isaac\onedrive\documents\dungeonsandphantoms\dungeonsandphantoms\global\conexion.h
+	<winsock2.h>
+	<stdio.h>
+	<string.h>
+
+1757852807 source:c:\users\isaac\onedrive\documents\dungeonsandphantoms\dungeonsandphantoms\global\juego.c
+	"laberinto.h"
+
+1757852807 c:\users\isaac\onedrive\documents\dungeonsandphantoms\dungeonsandphantoms\global\laberinto.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<time.h>
+	<unistd.h>
+	<conio.h>
+	"estructuras.h"
+
+1757857987 c:\users\isaac\onedrive\documents\dungeonsandphantoms\dungeonsandphantoms\global\estructuras.h
+
+1757859463 source:c:\users\isaac\onedrive\documents\dungeonsandphantoms\dungeonsandphantoms\global\laberinto.c
+	"laberinto.h"
 

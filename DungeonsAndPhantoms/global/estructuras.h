@@ -29,6 +29,7 @@ typedef struct {
     int maxFantasmas;
     int maxPremios;
     int maxVidasExtra;
+    float obstaculosEliminados;
 } tConfiguracion;
 
 typedef struct {

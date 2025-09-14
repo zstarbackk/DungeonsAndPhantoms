@@ -4,3 +4,4 @@ vidas_inicio: 3
 maximo_numero_fantasmas: 7
 maximo_numero_premios: 20
 maximo_vidas_extra: 3
+porcentajes_obstaculos: 0.1
