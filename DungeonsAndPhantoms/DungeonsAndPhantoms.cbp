@@ -34,6 +34,10 @@
 		<Linker>
 			<Add library="ws2_32" />
 		</Linker>
+		<Unit filename="global/cola.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="global/cola.h" />
 		<Unit filename="global/conexion.c">
 			<Option compilerVar="CC" />
 		</Unit>

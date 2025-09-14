@@ -118,54 +118,62 @@ int moverJugador(tLaberinto *lab, tEstadoJugador *estado, char direccion) {
         break;
     }
 
-//    if (elemento == 'P') { // Premio
-//        estado->puntos += 10;
-//        estado->premios_capturados++;
-//        printf("¡Premio capturado! +10 puntos\n");
-//        lab->tablero[nuevo_x][nuevo_y] = '.'; // Remover premio
-//
-//    } else if (elemento == 'V') { // Vida extra
-//        estado->vidas++;
-//        printf("¡Vida extra! +1 vida\n");
-//        lab->tablero[nuevo_x][nuevo_y] = '.'; // Remover vida extra
-//
-//    } else if (elemento == 'F') { // Fantasma
-//        estado->vidas--;
-//        printf("¡Fantasma! -1 vida. Regresas a la entrada\n");
-//        lab->jugador = lab->entrada; // Regresar a entrada
-//        return 1;
-//    }
-
     return 1;
 }
 void moverFantasmas(tLaberinto *lab, tEstadoJugador *estado) {
-    int i, nuevoX, nuevoY, dir, direcciones[4][2] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}}; // Arriba, abajo, izquierda, derecha
+    int i;
 
     for (i = 0; i < lab->numFantasmas; i++) {
         if (lab->fantasmas[i].x == -1) continue; // Fantasma eliminado
 
-        dir = rand() % 4;
-        nuevoX = lab->fantasmas[i].x + direcciones[dir][0];
-        nuevoY = lab->fantasmas[i].y + direcciones[dir][1];
-
-        // Verificar movimiento válido
-        if (nuevoX >= 0 && nuevoX < lab->filas && nuevoY >= 0 && nuevoY < lab->columnas &&
-            lab->tablero[nuevoX][nuevoY] == '.') {
-
-            // Mover fantasma
-            lab->tablero[lab->fantasmas[i].x][lab->fantasmas[i].y] = '.';
-            lab->fantasmas[i].x = nuevoX;
-            lab->fantasmas[i].y = nuevoY;
-            lab->tablero[nuevoX][nuevoY] = 'F';
-
-            // Verificar colisión con jugador
-            if (nuevoX == lab->jugador.x && nuevoY == lab->jugador.y) {
-                estado->vidas--;
-                printf("¡Fantasma te atrapó! -1 vida. Regresas a la entrada\n");
-                lab->jugador = lab->entrada;
-                lab->tablero[nuevoX][nuevoY] = '.'; // Eliminar fantasma
-                lab->fantasmas[i].x = -1; // Marcar como eliminado
+        if(abs(lab->jugador.x - lab->fantasmas[i].x) > abs(lab->jugador.y - lab->fantasmas[i].y)){
+            if(lab->jugador.x > lab->fantasmas[i].x){
+                if(lab->tablero[lab->fantasmas[i].x + 1][lab->fantasmas[i].y] == '.'){
+                    lab->tablero[lab->fantasmas[i].x][lab->fantasmas[i].y] = '.';
+                    lab->fantasmas[i].x += 1;
+                }
+                else{
+                    movimientoAleatorio(lab, i);
+                }
             }
+            else{
+                if(lab->tablero[lab->fantasmas[i].x - 1][lab->fantasmas[i].y] == '.'){
+                    lab->tablero[lab->fantasmas[i].x][lab->fantasmas[i].y] = '.';
+                    lab->fantasmas[i].x -= 1;
+                }
+                else{
+                    movimientoAleatorio(lab, i);
+                }
+            }
+        }
+        else{
+            if(lab->jugador.y > lab->fantasmas[i].y){
+                if(lab->tablero[lab->fantasmas[i].x][lab->fantasmas[i].y + 1] == '.'){
+                    lab->tablero[lab->fantasmas[i].x][lab->fantasmas[i].y] = '.';
+                    lab->fantasmas[i].y += 1;
+                }
+                else{
+                    movimientoAleatorio(lab, i);
+                }
+            }
+            else{
+                if(lab->tablero[lab->fantasmas[i].x][lab->fantasmas[i].y - 1] == '.'){
+                    lab->tablero[lab->fantasmas[i].x][lab->fantasmas[i].y] = '.';
+                    lab->fantasmas[i].y -= 1;
+                }
+                else{
+                    movimientoAleatorio(lab, i);
+                }
+            }
+        }
+        lab->tablero[lab->fantasmas[i].x][lab->fantasmas[i].y] = 'F';
+        if (lab->fantasmas[i].x == lab->jugador.x && lab->fantasmas[i].y == lab->jugador.y) {
+            estado->vidas--;
+            printf("¡Fantasma te atrapó! -1 vida. Regresas a la entrada\n");
+            getch();
+            lab->jugador = lab->entrada;
+            lab->tablero[lab->fantasmas[i].x][lab->fantasmas[i].y] = '.'; // Eliminar fantasma
+            lab->fantasmas[i].x = -1; // Marcar como eliminado
         }
     }
 }
@@ -173,11 +181,6 @@ void moverFantasmas(tLaberinto *lab, tEstadoJugador *estado) {
 int juegoTerminado(tEstadoJugador estado, tLaberinto lab) {
     // Verificar si el jugador llegó a la salida
     return (lab.jugador.x == lab.salida.x && lab.jugador.y == lab.salida.y);
-//    if (lab.jugador.x == lab.salida.x && lab.jugador.y == lab.salida.y) {
-//        return 1;
-//    }
-//
-//    return 0;
 }
 
 void liberarMemoria(tLaberinto *lab) {
@@ -198,4 +201,20 @@ void inicializarEstado(tLaberinto *lab, tEstadoJugador *estado, tConfiguracion c
     estado->vidas = config.vidasInicio;
     estado->puntos = 0;
     estado->premiosCapturados = 0;
+}
+void movimientoAleatorio(tLaberinto *lab, int numFantasma){
+    int dir, nuevoX, nuevoY, direcciones[4][2] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}}; // Arriba, abajo, izquierda, derecha
+
+    // Verificar movimiento válido
+    do{
+        dir = rand() % 4;
+        nuevoX = lab->fantasmas[numFantasma].x + direcciones[dir][0];
+        nuevoY = lab->fantasmas[numFantasma].y + direcciones[dir][1];
+    }while((nuevoX < 0 || nuevoX > lab->filas || nuevoY < 0 || nuevoY > lab->columnas ||
+        lab->tablero[nuevoX][nuevoY] != '.'));
+    // Mover fantasma
+    lab->tablero[lab->fantasmas[numFantasma].x][lab->fantasmas[numFantasma].y] = '.';
+    lab->fantasmas[numFantasma].x = nuevoX;
+    lab->fantasmas[numFantasma].y = nuevoY;
+    lab->tablero[nuevoX][nuevoY] = 'F';
 }
