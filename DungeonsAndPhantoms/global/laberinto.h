@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include <conio.h>
 #include "estructuras.h"
+#include "cola.h"
 
 // Prototipos laberinto.c
 void leerConfiguracion(tConfiguracion *config);
@@ -22,8 +23,8 @@ int esParedCritica(char **tablero, int x, int y, int filas, int columnas);
 void inicializarEstado(tLaberinto *lab, tEstadoJugador *estado, tConfiguracion config);
 void liberarMemoria(tLaberinto *lab);
 int juegoTerminado(tEstadoJugador estado, tLaberinto lab);
-void moverFantasmas(tLaberinto *lab, tEstadoJugador *estado);
+void moverFantasmas(tLaberinto *lab, tEstadoJugador *estado, tCola *movimientos);
 int moverJugador(tLaberinto *lab, tEstadoJugador *estado, char direccion);
 int iniciarJuego();
-void movimientoAleatorio(tLaberinto *lab, int numFantasma);
+char movimientoAleatorio(tLaberinto *lab, int numFantasma);
 #endif // LABERINTO_H_INCLUDED

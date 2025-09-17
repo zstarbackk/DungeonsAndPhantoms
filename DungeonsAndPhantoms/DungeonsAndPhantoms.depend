@@ -2,10 +2,10 @@
 1757852807 source:c:\users\isaac\onedrive\documents\dungeonsandphantoms\dungeonsandphantoms\main.c
 	"global/laberinto.h"
 
-1757720090 source:c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\global\laberinto.c
+1758063878 source:c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\global\laberinto.c
 	"laberinto.h"
 
-1757799211 c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\global\laberinto.h
+1758067715 c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\global\laberinto.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -13,19 +13,20 @@
 	<unistd.h>
 	<conio.h>
 	"estructuras.h"
+	"cola.h"
 
-1757719885 c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\global\estructuras.h
+1758063878 c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\global\estructuras.h
 
-1757802647 source:c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\main.c
+1758063878 source:c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\main.c
 	"global/laberinto.h"
 
-1757799247 source:c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\global\juego.c
+1758069109 source:c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\global\juego.c
 	"laberinto.h"
 
-1757802828 source:c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\global\conexion.c
+1758063878 source:c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\global\conexion.c
 	"conexion.h"
 
-1757802400 c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\global\conexion.h
+1758063878 c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\global\conexion.h
 	<winsock2.h>
 	<stdio.h>
 	<string.h>
@@ -89,4 +90,11 @@
 
 1757860424 source:c:\users\compu\documents\github\dungeonsandphantoms\dungeonsandphantoms\main.c
 	"global/laberinto.h"
+
+1758069927 source:c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\global\cola.c
+	"cola.h"
+
+1758063878 c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\global\cola.h
+	<stdlib.h>
+	<string.h>
 

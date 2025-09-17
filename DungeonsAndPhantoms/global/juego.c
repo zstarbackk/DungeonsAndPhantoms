@@ -1,6 +1,7 @@
 #include "laberinto.h"
 
 int iniciarJuego(){
+    tCola movJugador, movFantasmas;
     tConfiguracion config;
     tLaberinto laberinto;
     tEstadoJugador estado;
@@ -10,6 +11,8 @@ int iniciarJuego(){
 
     // Leer configuración
     leerConfiguracion(&config);
+    crearCola(&movFantasmas);
+    crearCola(&movJugador);
 
     // Generar laberinto
     if(!generarLaberinto(&laberinto, config))
@@ -20,7 +23,6 @@ int iniciarJuego(){
     inicializarEstado(&laberinto, &estado, config);
 
 
-
     while (!finJuego && estado.vidas > 0) {
 
         mostrarTablero(laberinto, estado);
@@ -28,7 +30,6 @@ int iniciarJuego(){
         fflush(stdin);
         printf("Movimiento: ");
         movimiento = getch();
-        //scanf(" %c", &movimiento);
 
         if (movimiento == 'q') {
             break;
@@ -37,13 +38,11 @@ int iniciarJuego(){
         // Mover jugador
         if (moverJugador(&laberinto, &estado, movimiento)) {
             // Mover fantasmas
-            moverFantasmas(&laberinto, &estado);
+            ponerEnCola(&movJugador, &movimiento, sizeof(char));
+            moverFantasmas(&laberinto, &estado, &movFantasmas);
 
             // Verificar si el juego terminó
             finJuego = juegoTerminado(estado, laberinto);
-//            if (juegoTerminado(estado, laberinto)) {
-//                juegoActivo = 0;
-//            }
         }
     }
 
@@ -57,6 +56,15 @@ int iniciarJuego(){
 
     printf("Puntos finales: %d\n", estado.puntos);
     printf("Premios capturados: %d\n", estado.premiosCapturados);
+    printf("Movimientos realizados por el jugador: ");
+    while(sacarDeCola(&movJugador, &movimiento, sizeof(char))){
+        switch (movimiento) {
+        case 'w': printf("arriba "); break;
+        case 's': printf("abajo "); break;
+        case 'a': printf("izquierda "); break;
+        case 'd': printf("derecha "); break;
+        }
+    }
 
     liberarMemoria(&laberinto);
     return 1;
@@ -120,8 +128,9 @@ int moverJugador(tLaberinto *lab, tEstadoJugador *estado, char direccion) {
 
     return 1;
 }
-void moverFantasmas(tLaberinto *lab, tEstadoJugador *estado) {
+void moverFantasmas(tLaberinto *lab, tEstadoJugador *estado, tCola *movimientos) {
     int i;
+    char mov;
 
     for (i = 0; i < lab->numFantasmas; i++) {
         if (lab->fantasmas[i].x == -1) continue; // Fantasma eliminado
@@ -131,18 +140,20 @@ void moverFantasmas(tLaberinto *lab, tEstadoJugador *estado) {
                 if(lab->tablero[lab->fantasmas[i].x + 1][lab->fantasmas[i].y] == '.'){
                     lab->tablero[lab->fantasmas[i].x][lab->fantasmas[i].y] = '.';
                     lab->fantasmas[i].x += 1;
+                    mov = 'd';
                 }
                 else{
-                    movimientoAleatorio(lab, i);
+                    mov = movimientoAleatorio(lab, i);
                 }
             }
             else{
                 if(lab->tablero[lab->fantasmas[i].x - 1][lab->fantasmas[i].y] == '.'){
                     lab->tablero[lab->fantasmas[i].x][lab->fantasmas[i].y] = '.';
                     lab->fantasmas[i].x -= 1;
+                    mov = 'a';
                 }
                 else{
-                    movimientoAleatorio(lab, i);
+                    mov = movimientoAleatorio(lab, i);
                 }
             }
         }
@@ -151,22 +162,26 @@ void moverFantasmas(tLaberinto *lab, tEstadoJugador *estado) {
                 if(lab->tablero[lab->fantasmas[i].x][lab->fantasmas[i].y + 1] == '.'){
                     lab->tablero[lab->fantasmas[i].x][lab->fantasmas[i].y] = '.';
                     lab->fantasmas[i].y += 1;
+                    mov = 'w';
                 }
                 else{
-                    movimientoAleatorio(lab, i);
+                    mov = movimientoAleatorio(lab, i);
                 }
             }
             else{
                 if(lab->tablero[lab->fantasmas[i].x][lab->fantasmas[i].y - 1] == '.'){
                     lab->tablero[lab->fantasmas[i].x][lab->fantasmas[i].y] = '.';
                     lab->fantasmas[i].y -= 1;
+                    mov = 's';
                 }
                 else{
-                    movimientoAleatorio(lab, i);
+                    mov = movimientoAleatorio(lab, i);
                 }
             }
         }
         lab->tablero[lab->fantasmas[i].x][lab->fantasmas[i].y] = 'F';
+        ponerEnCola(movimientos, &mov, sizeof(char));
+
         if (lab->fantasmas[i].x == lab->jugador.x && lab->fantasmas[i].y == lab->jugador.y) {
             estado->vidas--;
             printf("¡Fantasma te atrapó! -1 vida. Regresas a la entrada\n");
@@ -202,9 +217,16 @@ void inicializarEstado(tLaberinto *lab, tEstadoJugador *estado, tConfiguracion c
     estado->puntos = 0;
     estado->premiosCapturados = 0;
 }
-void movimientoAleatorio(tLaberinto *lab, int numFantasma){
+char movimientoAleatorio(tLaberinto *lab, int numFantasma){
     int dir, nuevoX, nuevoY, direcciones[4][2] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}}; // Arriba, abajo, izquierda, derecha
+    char mov[] = {'w', 's', 'i', 'd'};
 
+    //Verificar que el fantasma se pueda mover
+    if(lab->tablero[lab->fantasmas[numFantasma].x + 1][lab->fantasmas[numFantasma].y] != '.' &&
+       lab->tablero[lab->fantasmas[numFantasma].x -1 ][lab->fantasmas[numFantasma].y] != '.' &&
+       lab->tablero[lab->fantasmas[numFantasma].x][lab->fantasmas[numFantasma].y + 1] != '.' &&
+       lab->tablero[lab->fantasmas[numFantasma].x][lab->fantasmas[numFantasma].y - 1] != '.')
+        return 'q';
     // Verificar movimiento válido
     do{
         dir = rand() % 4;
@@ -217,4 +239,6 @@ void movimientoAleatorio(tLaberinto *lab, int numFantasma){
     lab->fantasmas[numFantasma].x = nuevoX;
     lab->fantasmas[numFantasma].y = nuevoY;
     lab->tablero[nuevoX][nuevoY] = 'F';
+
+    return *(mov + dir);
 }

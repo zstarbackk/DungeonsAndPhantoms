@@ -2,6 +2,7 @@
 
 void crearCola(tCola *p){
     p->pri = NULL;
+    p->ult = NULL;
 }
 void vaciarCola(tCola *p){
     tNodo *elim = p->pri;
@@ -11,6 +12,7 @@ void vaciarCola(tCola *p){
         free(elim);
         elim = p->pri;
     }
+    p->ult = NULL;
 }
 int ponerEnCola(tCola *p, const void *dato, unsigned tam){
     tNodo *nue;
@@ -20,14 +22,15 @@ int ponerEnCola(tCola *p, const void *dato, unsigned tam){
     }
     memcpy(nue->info, dato, tam);
     nue->tam = tam;
+    nue->sig = NULL;
 
-    if(p->pri){
-        nue->sig = p->ult;
-        p->ult = nue;
+    if(p->ult){
+        p->ult->sig = nue;
     }
     else{
         p->pri = nue;
     }
+        p->ult = nue;
     return 1;
 }
 int sacarDeCola(tCola *p, void *dato, unsigned tam){
@@ -38,6 +41,8 @@ int sacarDeCola(tCola *p, void *dato, unsigned tam){
     p->pri = elim->sig;
     free(elim->info);
     free(elim);
+    if(!p->pri)
+        p->ult = NULL;
     return 1;
 }
 int verPrimero(const tCola *p, void *dato, unsigned tam){
