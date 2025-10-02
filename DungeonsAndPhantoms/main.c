@@ -1,8 +1,7 @@
 #include "global/laberinto.h"
 
 int main() {
-
-    iniciarJuego();
+    menuPrincipal();
     return 0;
 }
 

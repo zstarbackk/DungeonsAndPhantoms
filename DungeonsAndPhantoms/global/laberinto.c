@@ -312,23 +312,22 @@ void guardarLaberinto(tLaberinto lab, const char *filename) {
     }
 
     fclose(archivo);
-    printf("Laberinto guardado en %s\n", filename);
 }
 
 
-void mostrarTablero(tLaberinto lab, tEstadoJugador estado) {
+void mostrarTablero(tLaberinto *lab, tEstadoJugador *estado) {
     system("cls");
     printf("=== LABERINTOS Y FANTASMAS ===\n");
     printf("Controles: w(arriba), s(abajo), a(izquierda), d(derecha), q(salir)\n\n");
 
-    printf("Vidas: %d | Puntos: %d | Premios: %d\n\n", estado.vidas, estado.puntos, estado.premiosCapturados);
+    printf("Vidas: %d | Puntos: %d | Premios: %d\n\n", estado->vidas, estado->puntos, estado->premiosCapturados);
 
-    for (int i = 0; i < lab.filas; i++) {
-        for (int j = 0; j < lab.columnas; j++) {
-            if (i == lab.jugador.x && j == lab.jugador.y) {
+    for (int i = 0; i < lab->filas; i++) {
+        for (int j = 0; j < lab->columnas; j++) {
+            if (i == lab->jugador.x && j == lab->jugador.y) {
                 printf("J "); // Mostrar jugador
             } else {
-                printf("%c ", lab.tablero[i][j]);
+                printf("%c ", lab->tablero[i][j]);
             }
         }
         printf("\n");

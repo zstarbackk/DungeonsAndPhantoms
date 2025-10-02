@@ -2,10 +2,10 @@
 1757852807 source:c:\users\isaac\onedrive\documents\dungeonsandphantoms\dungeonsandphantoms\main.c
 	"global/laberinto.h"
 
-1758063878 source:c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\global\laberinto.c
+1759285115 source:c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\global\laberinto.c
 	"laberinto.h"
 
-1758067715 c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\global\laberinto.h
+1759326730 c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\global\laberinto.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -17,10 +17,10 @@
 
 1758063878 c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\global\estructuras.h
 
-1758063878 source:c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\main.c
+1759326695 source:c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\main.c
 	"global/laberinto.h"
 
-1758069109 source:c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\global\juego.c
+1759414267 source:c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\global\juego.c
 	"laberinto.h"
 
 1758063878 source:c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\global\conexion.c
