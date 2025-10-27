@@ -4,6 +4,7 @@ void menuPrincipal(){
     int opc;
     SOCKET sock = iniciarConexion();
     if(sock != INVALID_SOCKET){
+        //cargarArchivoLocal(sock);
         iniciarSesion(sock, nomUsuario);
         do{
             do{
@@ -18,10 +19,10 @@ void menuPrincipal(){
             }while(opc < 1 || opc > 4);
             switch(opc){
                 case 1:
-                    iniciarJuego();
+                    iniciarJuego(sock, nomUsuario);
                     break;
                 case 2:
-                    if(send_request(sock, "RANK", buff)){
+                    if(send_request(sock, "RANKS", buff)){
                         printf("Ranking de Jugadores de Dungeons And Phantoms\n");
                         printf("%s", buff);
                         system("pause");
@@ -32,7 +33,7 @@ void menuPrincipal(){
                     }
                     break;
                 case 3:
-                    if(send_request(sock, "STAT", buff)){
+                    if(send_request(sock, "STATS", buff)){
                         printf("Estadisticas del jugador %s", nomUsuario);
                         printf("%s", buff);
                         system("pause");                    }
@@ -48,6 +49,8 @@ void menuPrincipal(){
     else{
         printf("No se pudo generar una conexion con el servidor, los datos seran guardados en forma local\n");
         system("pause");
+        printf("Ingrese el nombre de usuario\n>");
+        fgets(nomUsuario, sizeof(nomUsuario) -1, stdin);
         do{
             do{
                 system("cls");
@@ -60,16 +63,18 @@ void menuPrincipal(){
                 }
             }while(opc != 1 && opc != 2);
             if(opc == 1)
-                iniciarJuego();
+                iniciarJuego(INVALID_SOCKET, nomUsuario);
         }while(opc != 2);
     }
+
     close_connection(sock);
 }
-int iniciarJuego(){
+int iniciarJuego(SOCKET sock, const char *nomUsu){
     tCola regMovJugador, movJuego;
     tConfiguracion config;
     tLaberinto laberinto;
     tEstadoJugador estado;
+    ///Nombre, puntos, cant mov,
     // Bucle principal del juego
     char movimiento;
     int finJuego = 0;
@@ -78,6 +83,8 @@ int iniciarJuego(){
     leerConfiguracion(&config);
     crearCola(&movJuego);
     crearCola(&regMovJugador);
+
+    estado.cantMov = 0;
 
     // Generar laberinto
     if(!generarLaberinto(&laberinto, config))
@@ -92,7 +99,10 @@ int iniciarJuego(){
         // Mover jugador
         movimiento = moverJugador(&laberinto, &estado);
         if (movimiento == 'q') {
-            break;
+            vaciarCola(&movJuego);
+            vaciarCola(&regMovJugador);
+            liberarMemoria(&laberinto);
+            return 0;
         }
         // Mover fantasmas
         ponerEnCola(&regMovJugador, &movimiento, sizeof(char));
@@ -121,6 +131,13 @@ int iniciarJuego(){
             case 'a': printf("izquierda "); break;
             case 'd': printf("derecha "); break;
         }
+    }
+
+    if(sock != INVALID_SOCKET){
+        //cargarResultados(sock, nomUsu, estado.puntos, estado.cantMov);
+    }
+    else{
+        //guardarResultadosLocal(nomUsu, estado.puntos, estado.cantMov);
     }
 
     vaciarCola(&movJuego);
@@ -167,6 +184,7 @@ char moverJugador(tLaberinto *lab, tEstadoJugador *estado) {
 
     }while(nuevoX < 0 || nuevoX >= lab->filas || nuevoY < 0 || nuevoY >= lab->columnas || lab->tablero[nuevoX][nuevoY] == '#');
 
+    estado->cantMov++;
     return movimiento;
 }
 void moverFantasmas(tLaberinto *lab, tCola *movimientos) {
@@ -334,25 +352,27 @@ void efectuarMovimientos(tLaberinto *lab, tCola *movs, tEstadoJugador *estado){
     }
 }
 void iniciarSesion(SOCKET sock, char *nomUsu){
-    char nom[16], contr[16], rec[15];
+    char nom[16], contr[16], req[50], res[10];
 
     do{
         printf("Ingrese el nombre de usuario\n>");
         fgets(nom, sizeof(nom) -1, stdin);
+        sacarSalto(nom);
         printf("Ingrese la contraseña\n>");
         fgets(contr, sizeof(nom) -1, stdin);
-        send_request(sock, "LOGIN", rec);
-    }while(strcmp(rec, "E") && strcmp(rec, "F"));
+        sacarSalto(contr);
+        sprintf(req, "LOGIN %s|%s", nom, contr);
+        send_request(sock, req, res);
+    }while(strcmp(res, "E") == 0 || strcmp(res, "F") == 0);
 
     strcpy(nomUsu, nom);
 
-    if(strcmp(rec, "R"))
+    if(strcmp(res, "R"))
         printf("Se ha registrado el usuario correctamente\n");
     else
         printf("Se ha iniciado sesion correctamente\n");
+    system("pause");
 }
-
-
 
 
 

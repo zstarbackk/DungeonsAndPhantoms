@@ -5,7 +5,7 @@ int buscarUsuario(char * nombre, char * text){
 // Funciones auxiliares
 void login(char * text){
     char usuario[16], contrasenia[16], aux;
-    if(sscanf(text, "%[^|]|%[^\n]",usuario, contrasenia)!=2){
+    if(sscanf(text, "%[^|]|%s",usuario, contrasenia)!=2){
         strcpy(text, "E");/// Error
         return;
     }
@@ -57,7 +57,7 @@ SOCKET createServerSocket()
 void procesarRequest(const char *request, char *response)
 {
     char operation[16], text[BUFFER_SIZE];
-    sscanf(request, "%5s|%[^\n]", operation, text);
+    sscanf(request, "%5s %s", operation, text);
 
     if (strcmp(operation, "LOGIN") == 0)
     {

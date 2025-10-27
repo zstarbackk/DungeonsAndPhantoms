@@ -26,9 +26,14 @@ void liberarMemoria(tLaberinto *lab);
 int juegoTerminado(tEstadoJugador estado, tLaberinto lab);
 void moverFantasmas(tLaberinto *lab, tCola *movimientos);
 char moverJugador(tLaberinto *lab, tEstadoJugador *estado);
-int iniciarJuego();
+int iniciarJuego(SOCKET sock, const char *nomUsu);
 char movimientoAleatorio(tLaberinto *lab, int numFantasma);
 void efectuarMovimientos(tLaberinto *lab, tCola *movs, tEstadoJugador *estado);
 void menuPrincipal();
+
 void iniciarSesion(SOCKET sock, char *nomUsu);
+void cargarArchivoLocal(SOCKET sock);
+void cargarResultados(SOCKET sock, const char* nomUsu, int puntaje, int cantMov);
+void guardarResultadosLocal(const char* nomUsu, int puntaje, int cantMov);
+
 #endif // LABERINTO_H_INCLUDED

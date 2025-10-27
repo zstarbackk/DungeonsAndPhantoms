@@ -31,9 +31,20 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Linker>
+			<Add library="ws2_32" />
+		</Linker>
+		<Unit filename="cola.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="cola.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="serverlib.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="serverlib.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>
