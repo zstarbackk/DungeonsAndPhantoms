@@ -98,3 +98,39 @@
 	<stdlib.h>
 	<string.h>
 
+1761422059 source:c:\users\isaac\onedrive\documents\algoritmos oficial\dungeonsandphantoms\dungeonsandphantoms\global\cola.c
+	"cola.h"
+
+1761422059 c:\users\isaac\onedrive\documents\algoritmos oficial\dungeonsandphantoms\dungeonsandphantoms\global\cola.h
+	<stdlib.h>
+	<string.h>
+
+1761422059 source:c:\users\isaac\onedrive\documents\algoritmos oficial\dungeonsandphantoms\dungeonsandphantoms\global\conexion.c
+	"conexion.h"
+
+1761422059 c:\users\isaac\onedrive\documents\algoritmos oficial\dungeonsandphantoms\dungeonsandphantoms\global\conexion.h
+	<winsock2.h>
+	<stdio.h>
+	<string.h>
+
+1761422059 source:c:\users\isaac\onedrive\documents\algoritmos oficial\dungeonsandphantoms\dungeonsandphantoms\global\juego.c
+	"laberinto.h"
+
+1761422059 c:\users\isaac\onedrive\documents\algoritmos oficial\dungeonsandphantoms\dungeonsandphantoms\global\laberinto.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<time.h>
+	<unistd.h>
+	<conio.h>
+	"estructuras.h"
+	"cola.h"
+
+1761422059 c:\users\isaac\onedrive\documents\algoritmos oficial\dungeonsandphantoms\dungeonsandphantoms\global\estructuras.h
+
+1761422059 source:c:\users\isaac\onedrive\documents\algoritmos oficial\dungeonsandphantoms\dungeonsandphantoms\global\laberinto.c
+	"laberinto.h"
+
+1761422059 source:c:\users\isaac\onedrive\documents\algoritmos oficial\dungeonsandphantoms\dungeonsandphantoms\main.c
+	"global/laberinto.h"
+
