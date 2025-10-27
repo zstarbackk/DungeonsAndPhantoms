@@ -1,0 +1,24 @@
+# depslib dependency file v1.0
+1761570338 source:c:\users\isaac\onedrive\documents\algoritmos oficial\dungeonsandphantoms\dungeonsandphantoms\servidor\server\cola.c
+	"cola.h"
+
+1761570340 c:\users\isaac\onedrive\documents\algoritmos oficial\dungeonsandphantoms\dungeonsandphantoms\servidor\server\cola.h
+	<stdlib.h>
+	<string.h>
+
+1761571790 source:c:\users\isaac\onedrive\documents\algoritmos oficial\dungeonsandphantoms\dungeonsandphantoms\servidor\server\main.c
+	<stdio.h>
+	<stdlib.h>
+	"serverlib.h"
+
+1761576431 source:c:\users\isaac\onedrive\documents\algoritmos oficial\dungeonsandphantoms\dungeonsandphantoms\servidor\server\serverlib.c
+	"serverlib.h"
+
+1761573949 c:\users\isaac\onedrive\documents\algoritmos oficial\dungeonsandphantoms\dungeonsandphantoms\servidor\server\serverlib.h
+	<ctype.h>
+	<stdio.h>
+	<string.h>
+	<time.h>
+	<winsock2.h>
+	"cola.h"
+
