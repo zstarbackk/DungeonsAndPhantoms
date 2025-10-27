@@ -1,16 +1,16 @@
 #include "conexion.h"
 
-int iniciarConexion(){
+SOCKET iniciarConexion(){
     if (init_winsock() != 0) {
-        return WSK_ERR;
+        return INVALID_SOCKET;
     }
 
     SOCKET sock = connect_to_server(SERVER_IP, PORT);
     if (sock == INVALID_SOCKET) {
         WSACleanup();
-        return CNX_ERR;
+        return INVALID_SOCKET;
     }
-    return 1;
+    return sock;
 }
 
 int init_winsock() {
@@ -37,16 +37,16 @@ SOCKET connect_to_server(const char *server_ip, int port) {
 
 int send_request(SOCKET sock, const char *request, char *response) {
     if (send(sock, request, strlen(request), 0) < 0) {
-        return -1;
+        return 0;
     }
 
     int bytes_received = recv(sock, response, BUFFER_SIZE - 1, 0);
     if (bytes_received <= 0) {
-        return -1;
+        return 0;
     }
 
     response[bytes_received] = '\0';
-    return 0;
+    return 1;
 }
 
 void close_connection(SOCKET sock) {

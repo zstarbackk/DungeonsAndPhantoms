@@ -1,25 +1,69 @@
 #include "laberinto.h"
 void menuPrincipal(){
+    char nomUsuario[25], buff[BUFFER_SIZE];
     int opc;
-    do{
+    SOCKET sock = iniciarConexion();
+    if(sock != INVALID_SOCKET){
+        iniciarSesion(sock, nomUsuario);
         do{
-            system("cls");
-            printf("Bienvenido a Dungeons and Phantoms\n");
-            printf("    1. Iniciar Partida\n    2. Ver Ranking\n    3. Salir\n>");
-            scanf("%d", &opc);
-            if(opc < 1 || opc > 3){
-                printf("Opcion no Valida\n");
-                system("pause");
+            do{
+                system("cls");
+                printf("Bienvenido a Dungeons and Phantoms\n");
+                printf("    1. Iniciar Partida\n    2. Ver Ranking\n    3. Ver Estadisticas Del Jugador\n 4.Salir\n>");
+                scanf("%d", &opc);
+                if(opc < 1 || opc > 3){
+                    printf("Opcion no Valida\n");
+                    system("pause");
+                }
+            }while(opc < 1 || opc > 4);
+            switch(opc){
+                case 1:
+                    iniciarJuego();
+                    break;
+                case 2:
+                    if(send_request(sock, "RANK", buff)){
+                        printf("Ranking de Jugadores de Dungeons And Phantoms\n");
+                        printf("%s", buff);
+                        system("pause");
+                    }
+                    else{
+                        printf("No hay ranking\n");
+                        system("pause");
+                    }
+                    break;
+                case 3:
+                    if(send_request(sock, "STAT", buff)){
+                        printf("Estadisticas del jugador %s", nomUsuario);
+                        printf("%s", buff);
+                        system("pause");                    }
+                    else{
+                        printf("El jugador no tiene estadisticas registradas\n");
+                        system("pause");
+                    }
+                    break;
             }
-        }while(opc < 1 || opc > 3);
-        switch(opc){
-            case 1: iniciarJuego(); break;
-            case 2: printf("Coming soon...\n");
-                system("pause");
-                break;
-        }
 
-    }while(opc != 3);
+        }while(opc != 4);
+    }
+    else{
+        printf("No se pudo generar una conexion con el servidor, los datos seran guardados en forma local\n");
+        system("pause");
+        do{
+            do{
+                system("cls");
+                printf("Bienvenido a Dungeons and Phantoms\n");
+                printf("    1. Iniciar Partida\n    2. Salir\n>");
+                scanf("%d", &opc);
+                if(opc != 1 && opc != 2){
+                    printf("Opcion no Valida\n");
+                    system("pause");
+                }
+            }while(opc != 1 && opc != 2);
+            if(opc == 1)
+                iniciarJuego();
+        }while(opc != 2);
+    }
+    close_connection(sock);
 }
 int iniciarJuego(){
     tCola regMovJugador, movJuego;
@@ -79,6 +123,8 @@ int iniciarJuego(){
         }
     }
 
+    vaciarCola(&movJuego);
+    vaciarCola(&regMovJugador);
     liberarMemoria(&laberinto);
     system("pause");
     return 1;
@@ -287,3 +333,36 @@ void efectuarMovimientos(tLaberinto *lab, tCola *movs, tEstadoJugador *estado){
         }
     }
 }
+void iniciarSesion(SOCKET sock, char *nomUsu){
+    char nom[16], contr[16], rec[15];
+
+    do{
+        printf("Ingrese el nombre de usuario\n>");
+        fgets(nom, sizeof(nom) -1, stdin);
+        printf("Ingrese la contraseña\n>");
+        fgets(contr, sizeof(nom) -1, stdin);
+        send_request(sock, "LOGIN", rec);
+    }while(strcmp(rec, "E") && strcmp(rec, "F"));
+
+    strcpy(nomUsu, nom);
+
+    if(strcmp(rec, "R"))
+        printf("Se ha registrado el usuario correctamente\n");
+    else
+        printf("Se ha iniciado sesion correctamente\n");
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

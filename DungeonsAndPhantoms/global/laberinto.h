@@ -9,6 +9,7 @@
 #include <conio.h>
 #include "estructuras.h"
 #include "cola.h"
+#include "conexion.h"
 
 // Prototipos laberinto.c
 void leerConfiguracion(tConfiguracion *config);
@@ -29,4 +30,5 @@ int iniciarJuego();
 char movimientoAleatorio(tLaberinto *lab, int numFantasma);
 void efectuarMovimientos(tLaberinto *lab, tCola *movs, tEstadoJugador *estado);
 void menuPrincipal();
+void iniciarSesion(SOCKET sock, char *nomUsu);
 #endif // LABERINTO_H_INCLUDED

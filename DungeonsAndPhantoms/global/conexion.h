@@ -7,11 +7,11 @@
 
 #define SERVER_IP "127.0.0.1"
 #define PORT 12345
-#define BUFFER_SIZE 1024
+#define BUFFER_SIZE 2048
 #define WSK_ERR -12
 #define CNX_ERR -13
 
-int iniciarConexion();
+SOCKET iniciarConexion();
 
 // Inicializa Winsock
 int init_winsock();
