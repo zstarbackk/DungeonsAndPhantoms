@@ -2,17 +2,45 @@
 int buscarUsuario(char * nombre, char * text){
     return 1;
 }
-// Funciones auxiliares
+int darDeAlta(char * usuario, char * contrasenia){
+    tUsuario user;
+    FILE * pf = fopen("usuarios.dat", "ab");
+    if(pf==NULL){
+        return 0;
+    }
+    strcpy(user.usuario, usuario);
+    strcpy(user.contrasenia, contrasenia);
+    user.puntosTotales = 0;
+    user.cantPartidas = 0;
+    return 1;
+}
+///Funciones auxiliares
 void login(char * text){
-    char usuario[16], contrasenia[16], aux;
+    char usuario[16], contrasenia[16];
+    int aux, intentos = 5;
     if(sscanf(text, "%[^|]|%s",usuario, contrasenia)!=2){
         strcpy(text, "E");/// Error
         return;
     }
-    if(buscarUsuario(usuario, text)){
+    /*  Usuario no encontrado = -1
+        Usuario encontrado, contrasenia incorrecta  = 0
+        Usuario encontrado, contrasenia correcta = 1
+    */
+    aux = buscarUsuario(usuario, contrasenia);
+    switch (aux) {
+        case -1:
+            while(darDeAlta(usuario, contrasenia) == 0&& intentos >0){
+                intentos++;
+            }
 
+            strcpy(text, "R");
+            break;
+        case 0:
+            strcpy(text, "F");
+            break;
+        case 1:
+            strcpy(text, "I");
     }
-    strcpy(text, "I");/// Sesion Iniciada
 }
 void getRank(char * text){
 
@@ -79,13 +107,18 @@ void procesarRequest(const char *request, char *response)
         postGame(text);
         snprintf(response, BUFFER_SIZE, "%s", text);
     }
+    else if (strcmp(operation, "FINAL") == 0)
+    {
+        strcpy(response, "EXIT");
+        snprintf(response, BUFFER_SIZE, "%s", text);
+    }
     else
     {
         snprintf(response, BUFFER_SIZE, "Operacion no valida");
     }
 }
 
-void runServer()
+void runServer(tArbol *iUsuario, tArbol *iRanked)
 {
     char buffer[BUFFER_SIZE];
     char response[BUFFER_SIZE];
@@ -93,10 +126,13 @@ void runServer()
 
     struct sockaddr_in client_addr;
     int client_addr_size;
-    int err;
+    int err, cerrar = 0;
     char peticion[BUFFER_SIZE];
-
+    tArbol indiceUsuario, indiceRanked;
+    ///cargarIndiceUsario(&indiceUsuario);
+    ///cargarIndiceRanked(&indiceRanked);
     tCola cola;
+    int CantidadPeticionesBackup = 0;
 
     if (initWinsock() != 0)
     {
@@ -113,77 +149,87 @@ void runServer()
     }
 
     printf("Servidor escuchando en puerto %d...\n", PORT);
-    client_addr_size = sizeof(client_addr);
-
-    SOCKET client_socket = accept(server_socket, (struct sockaddr *)&client_addr, &client_addr_size);
-    if (client_socket == INVALID_SOCKET)
-    {
-        printf("Error en accept()\n");
-        closesocket(server_socket);
-        WSACleanup();
-        return;
-    }
-
-    printf("Cliente conectado.\n");
     crearCola(&cola);
 
-    // Bucle principal
-    while (1)
+    while (cerrar==0)
     {
-        // Intentar recibir un mensaje
-        bytes_received = recv(client_socket, buffer, BUFFER_SIZE - 1, 0);
-        if (bytes_received > 0)
-        {
-            buffer[bytes_received] = '\0';
-            printf("[RX] Recibido: %s\n", buffer);
+        client_addr_size = sizeof(client_addr);
+        SOCKET client_socket = accept(server_socket, (struct sockaddr *)&client_addr, &client_addr_size);
 
-            // Encolamos el mensaje recibido
-            ponerEnCola(&cola, buffer, BUFFER_SIZE);
-        }
-        else if (bytes_received == 0)
+        if (client_socket == INVALID_SOCKET)
         {
-            // El cliente ha cerrado la conexin de forma ordenada
-            printf("Cliente desconectado (recv == 0). Saliendo del bucle.\n");
-            break;
+            printf("Error en accept(): %d\n", WSAGetLastError());
+            continue; // Sigue escuchando aunque un accept falle
         }
-        else /* bytes_received == SOCKET_ERROR */
+
+        printf("Cliente conectado.\n");
+
+
+        while (1)
         {
-            err = WSAGetLastError();        // Ver que es esto
-            if (err == WSAEWOULDBLOCK)
+            bytes_received = recv(client_socket, buffer, BUFFER_SIZE - 1, 0);
+
+            if (bytes_received > 0)
             {
-                // No hay datos en modo no-bloqueante.
-                // Simplemente seguimos el bucle y procesamos la cola.
+                buffer[bytes_received] = '\0';
+                printf("[RX] Recibido: %s\n", buffer);
+                ponerEnCola(&cola, buffer, BUFFER_SIZE);
+                ponerEnCola(&colaBackup, buffer, BUFFER_SIZE);
+                CantidadPeticionesBackup++;
+            }
+            else if (bytes_received == 0)
+            {
+                printf("Cliente desconectado.\n");
+                break; // Sale del bucle de cliente, vuelve a esperar otro
             }
             else
             {
-                // Error serio, salimos
-                printf("Error en recv(): %d. Saliendo.\n", err);
-                break;
+                err = WSAGetLastError();
+                if (err != WSAEWOULDBLOCK)
+                {
+                    printf("Error en recv(): %d\n", err);
+                    break;
+                }
             }
+
+            // Procesar mensajes pendientes en la cola
+            while (!colaVacia(&cola))
+            {
+                sacarDeCola(&cola, peticion, BUFFER_SIZE);
+                printf("[PROC] Procesando: %s\n", peticion);
+                procesarRequest(peticion, response, iUsuario, iRanked);
+                send(client_socket, response, strlen(response), 0);
+                printf("[TX] Enviado: %s\n", response);
+            }
+            if(strcmp(response,"EXIT")==0){
+                cerrar = 0;
+                break;
+            }///Sale del bucle y Guarda todo
+            Sleep(100);
         }
-
-        // Procesar mensajes pendientes en la cola
-        while (!colaVacia(&cola))
-        {
-            // Desencolar la peticion
-            sacarDeCola(&cola, peticion, BUFFER_SIZE);
-
-            // Procesar la peticion
-            printf("[PROC] Procesando: %s\n", peticion);
-            procesarRequest(peticion, response);
-
-            // Enviar la respuesta al cliente (si es necesario)
-            send(client_socket, response, strlen(response), 0);
-            printf("[TX] Enviado: %s\n", response);
-        }
-
-        // Evita usar de manera intenciva la CPU
-        Sleep(100);
+        closesocket(client_socket);
+        printf("Esperando nuevo cliente...\n");
     }
-
+    avisarSeCerroBien();
     vaciarCola(&cola);
-    printf("Conexion cerrada.\n");
-    closesocket(client_socket);
     closesocket(server_socket);
     WSACleanup();
+}
+
+void avisarSeCerroBien(){
+    FILE * pf = fopen("state.txt","wt");
+    if(pf == NULL)
+        return;
+    fprintf(pf, "1");
+    fclose(pf);
+}
+int chequearEstado(){
+    FILE * pf = fopen("state.txt", "rt");
+    if(pf==NULL){
+        return 0;
+    }
+    ///Se pudo abrir, existe. Se borra el archivo para despues generarlo de nuevo
+    fclose(pf);
+    remove("state.txt");
+    return 1;
 }

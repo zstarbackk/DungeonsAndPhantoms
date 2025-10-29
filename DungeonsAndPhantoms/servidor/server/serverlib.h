@@ -11,6 +11,12 @@
 
 #define PORT 12345
 #define BUFFER_SIZE 2048
+typedef struct{
+    char usuario[16];
+    char contrasenia[16];
+    unsigned puntosTotales;
+    int cantPartidas;
+}tUsuario;
 
 // Inicializa Winsock
 int initWinsock();
@@ -24,6 +30,8 @@ void procesarRequest(const char *request, char *response);
 // Ejecuta el bucle principal del servidor
 void runServer();
 ///
+void avisarSeCerroBien();
+int chequearEstado();
 void login(char * text);
 void getRank(char * text);
 void getStats(char * text);

@@ -22,3 +22,28 @@
 	<winsock2.h>
 	"cola.h"
 
+1761761415 source:c:\users\isaac\onedrive\documents\algoritmos tp git, modificar aca\dungeonsandphantoms\dungeonsandphantoms\servidor\server\cola.c
+	"cola.h"
+
+1761761415 c:\users\isaac\onedrive\documents\algoritmos tp git, modificar aca\dungeonsandphantoms\dungeonsandphantoms\servidor\server\cola.h
+	<stdlib.h>
+	<string.h>
+
+1761761415 source:c:\users\isaac\onedrive\documents\algoritmos tp git, modificar aca\dungeonsandphantoms\dungeonsandphantoms\servidor\server\main.c
+	<stdio.h>
+	<stdlib.h>
+	"serverlib.h"
+
+1761768007 c:\users\isaac\onedrive\documents\algoritmos tp git, modificar aca\dungeonsandphantoms\dungeonsandphantoms\servidor\server\serverlib.h
+	<ctype.h>
+	<stdio.h>
+	<string.h>
+	<time.h>
+	<winsock2.h>
+	"cola.h"
+
+1761761510 source:c:\users\isaac\onedrive\documents\algoritmos tp git, modificar aca\dungeonsandphantoms\dungeonsandphantoms\servidor\server\indice\arbol.c
+
+1761768280 source:c:\users\isaac\onedrive\documents\algoritmos tp git, modificar aca\dungeonsandphantoms\dungeonsandphantoms\servidor\server\serverlib.c
+	"serverlib.h"
+
