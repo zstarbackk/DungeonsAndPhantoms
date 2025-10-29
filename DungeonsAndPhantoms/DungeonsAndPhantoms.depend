@@ -5,7 +5,7 @@
 1759285115 source:c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\global\laberinto.c
 	"laberinto.h"
 
-1759326730 c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\global\laberinto.h
+1761771032 c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\global\laberinto.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -14,22 +14,23 @@
 	<conio.h>
 	"estructuras.h"
 	"cola.h"
+	"conexion.h"
+	"juego.h"
 
-1758063878 c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\global\estructuras.h
+1761771122 c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\global\estructuras.h
 
 1759326695 source:c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\main.c
 	"global/laberinto.h"
 
-1759414267 source:c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\global\juego.c
-	"laberinto.h"
+1761772954 source:c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\global\juego.c
+	"juego.h"
 
-1758063878 source:c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\global\conexion.c
+1761770889 source:c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\global\conexion.c
 	"conexion.h"
 
-1758063878 c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\global\conexion.h
+1761771175 c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\global\conexion.h
 	<winsock2.h>
-	<stdio.h>
-	<string.h>
+	"laberinto.h"
 
 1757852807 source:c:\users\isaac\onedrive\documents\dungeonsandphantoms\dungeonsandphantoms\global\conexion.c
 	"conexion.h"
@@ -135,4 +136,7 @@
 
 1761422059 source:c:\users\isaac\onedrive\documents\algoritmos oficial\dungeonsandphantoms\dungeonsandphantoms\main.c
 	"global/laberinto.h"
+
+1761772739 c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\global\juego.h
+	"laberinto.h"
 

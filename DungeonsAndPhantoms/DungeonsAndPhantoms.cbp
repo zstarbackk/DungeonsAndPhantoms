@@ -46,6 +46,7 @@
 		<Unit filename="global/juego.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="global/juego.h" />
 		<Unit filename="global/laberinto.c">
 			<Option compilerVar="CC" />
 		</Unit>

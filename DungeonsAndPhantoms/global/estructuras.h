@@ -5,8 +5,8 @@
 #define LAB_ERR -1
 
 ///Macros
-#define min(a,b) ((a)<(b)?(a):(b))
-#define max(a,b) ((a)>(b)?(a):(b))
+//#define min(a,b) ((a)<(b)?(a):(b))
+//#define max(a,b) ((a)>(b)?(a):(b))
 #define sacarSalto(x) {char *aux = strchr(x, '\n'); if(aux) *aux = '\0';}
 ///esX
 #define esPared(a) ((a)=='#')
