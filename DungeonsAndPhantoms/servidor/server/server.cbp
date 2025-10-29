@@ -38,6 +38,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="cola.h" />
+		<Unit filename="indice/arbol.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="indice/arbol.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
