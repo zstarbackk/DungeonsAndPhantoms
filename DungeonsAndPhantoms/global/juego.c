@@ -46,7 +46,7 @@ void menuPrincipal(){
         }while(opc != '4');
     }
     else{
-        printf("No se pudo generar una conexion con el servidor, los datos seran guardados en forma local\n");
+        printf("No se pudo generar una conexion con el servidor, los datos seran guardados en forma local.\n");
         system("pause");
         system("cls");
         printf("Ingrese el nombre de usuario\n>");
@@ -67,7 +67,7 @@ int iniciarJuego(SOCKET sock, const char *nomUsu){
     tLaberinto laberinto;
     tEstadoJugador estado;
     // Bucle principal del juego
-    char movimiento;
+    char movimiento, opc;
     int finJuego = 0;
 
     // Leer configuración
@@ -112,17 +112,20 @@ int iniciarJuego(SOCKET sock, const char *nomUsu){
 
     printf("Puntos finales: %d\n", estado.puntos);
     printf("Premios capturados: %d\n", estado.premiosCapturados);
-    printf("Movimientos realizados por el jugador: ");
     system("pause");
 
-    recrearMovimientos(&regMovJugador, &laberinto);
+    opc = menu(MSJ_MOVS, OPC_MOVS);
+    if(opc == '1')
+        recrearMovimientos(&regMovJugador, &laberinto);
+    system("cls");
 
     if(sock != INVALID_SOCKET){
         if(cargarResultados(sock, nomUsu, estado.puntos, estado.cantMov))
             printf("Resultados guardados en el servidor\n");
     }
     else{
-        guardarResultadosLocal(nomUsu, estado.puntos, estado.cantMov);
+        if(guardarResultadosLocal(nomUsu, estado.puntos, estado.cantMov))
+            printf("Resultados guardados en forma local\n");
     }
 
     vaciarCola(&movJuego);

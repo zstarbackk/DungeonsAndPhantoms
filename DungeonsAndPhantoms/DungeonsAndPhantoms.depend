@@ -22,10 +22,10 @@
 1759326695 source:c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\main.c
 	"global/laberinto.h"
 
-1761772954 source:c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\global\juego.c
+1761855922 source:c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\global\juego.c
 	"juego.h"
 
-1761770889 source:c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\global\conexion.c
+1761855289 source:c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\global\conexion.c
 	"conexion.h"
 
 1761771175 c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\global\conexion.h
@@ -137,6 +137,6 @@
 1761422059 source:c:\users\isaac\onedrive\documents\algoritmos oficial\dungeonsandphantoms\dungeonsandphantoms\main.c
 	"global/laberinto.h"
 
-1761772739 c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\global\juego.h
+1761856260 c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\global\juego.h
 	"laberinto.h"
 

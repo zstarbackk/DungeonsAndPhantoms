@@ -13,6 +13,10 @@
 
 #define OPC_SIN_CONEXION "12"
 
+#define MSJ_MOVS "Desea recrear los movimientos realizados?\n" \
+                "   1.Si\n   2.No\n>"
+
+#define OPC_MOVS "12"
 // Prototipos juego.c
 void inicializarEstado(tLaberinto *lab, tEstadoJugador *estado, tConfiguracion config);
 void liberarMemoria(tLaberinto *lab);

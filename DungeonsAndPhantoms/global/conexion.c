@@ -1,6 +1,7 @@
 #include "conexion.h"
 
 SOCKET iniciarConexion(){
+    printf("Conectando con el servidor...\n");
     if (init_winsock() != 0) {
         return INVALID_SOCKET;
     }
