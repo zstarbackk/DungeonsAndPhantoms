@@ -22,28 +22,43 @@
 	<winsock2.h>
 	"cola.h"
 
-1761761415 source:c:\users\isaac\onedrive\documents\algoritmos tp git, modificar aca\dungeonsandphantoms\dungeonsandphantoms\servidor\server\cola.c
+1762109944 source:c:\users\isaac\onedrive\documents\algoritmos tp git, modificar aca\dungeonsandphantoms\dungeonsandphantoms\servidor\server\cola.c
 	"cola.h"
 
-1761761415 c:\users\isaac\onedrive\documents\algoritmos tp git, modificar aca\dungeonsandphantoms\dungeonsandphantoms\servidor\server\cola.h
+1762109887 c:\users\isaac\onedrive\documents\algoritmos tp git, modificar aca\dungeonsandphantoms\dungeonsandphantoms\servidor\server\cola.h
 	<stdlib.h>
 	<string.h>
 
-1761761415 source:c:\users\isaac\onedrive\documents\algoritmos tp git, modificar aca\dungeonsandphantoms\dungeonsandphantoms\servidor\server\main.c
+1762109991 source:c:\users\isaac\onedrive\documents\algoritmos tp git, modificar aca\dungeonsandphantoms\dungeonsandphantoms\servidor\server\main.c
 	<stdio.h>
 	<stdlib.h>
 	"serverlib.h"
 
-1761768007 c:\users\isaac\onedrive\documents\algoritmos tp git, modificar aca\dungeonsandphantoms\dungeonsandphantoms\servidor\server\serverlib.h
+1762111100 c:\users\isaac\onedrive\documents\algoritmos tp git, modificar aca\dungeonsandphantoms\dungeonsandphantoms\servidor\server\serverlib.h
 	<ctype.h>
 	<stdio.h>
 	<string.h>
 	<time.h>
 	<winsock2.h>
+	<stdlib.h>
 	"cola.h"
+	"indice//arbol//arbol.h"
 
 1761761510 source:c:\users\isaac\onedrive\documents\algoritmos tp git, modificar aca\dungeonsandphantoms\dungeonsandphantoms\servidor\server\indice\arbol.c
 
 1761768280 source:c:\users\isaac\onedrive\documents\algoritmos tp git, modificar aca\dungeonsandphantoms\dungeonsandphantoms\servidor\server\serverlib.c
 	"serverlib.h"
+
+1762095863 source:c:\users\isaac\onedrive\documents\algoritmos tp git, modificar aca\dungeonsandphantoms\dungeonsandphantoms\servidor\server\indice\arbol\arbol.c
+	"arbol.h"
+
+1762109414 c:\users\isaac\onedrive\documents\algoritmos tp git, modificar aca\dungeonsandphantoms\dungeonsandphantoms\servidor\server\indice\arbol\arbol.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1762109414 c:\users\isaac\onedrive\documents\algoritmos tp git, modificar aca\dungeonsandphantoms\dungeonsandphantoms\servidor\server\indice\\arbol\\arbol.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
 

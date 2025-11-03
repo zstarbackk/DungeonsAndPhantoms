@@ -9,7 +9,7 @@ void crearCola(tCola *p)
 
 int  colaLlena(const tCola *p, unsigned cantBytes)
 {
-    tNodo  *aux = (tNodo *)malloc(sizeof(tNodo));
+    lNodo  *aux = (lNodo *)malloc(sizeof(lNodo));
     void   *info = malloc(cantBytes);
     free(aux);
     free(info);
@@ -18,7 +18,7 @@ int  colaLlena(const tCola *p, unsigned cantBytes)
 
 int  ponerEnCola(tCola *p, const void *d, unsigned cantBytes)
 {
-    tNodo *nue = (tNodo *) malloc(sizeof(tNodo));
+    lNodo *nue = (lNodo *) malloc(sizeof(lNodo));
 
     if(nue == NULL || (nue->info = malloc(cantBytes)) == NULL)
     {
@@ -51,7 +51,7 @@ int  colaVacia(const tCola *p)
 
 int  sacarDeCola(tCola *p, void *d, unsigned cantBytes)
 {
-    tNodo *aux = p->pri;
+    lNodo *aux = p->pri;
     if(aux == NULL)
         return 0;
     p->pri = aux->sig;
@@ -67,11 +67,10 @@ void vaciarCola(tCola *p)
 {
     while(p->pri)
     {
-        tNodo *aux = p->pri;
+        lNodo *aux = p->pri;
         p->pri = aux->sig;
         free(aux->info);
         free(aux);
     }
     p->ult = NULL;
 }
-

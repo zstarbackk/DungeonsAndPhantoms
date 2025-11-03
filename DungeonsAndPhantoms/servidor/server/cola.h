@@ -3,16 +3,16 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef struct sNodo
+typedef struct lNodo
 {
     void           *info;
     unsigned        tamInfo;
-    struct sNodo   *sig;
-} tNodo;
+    struct lNodo   *sig;
+} lNodo;
 
 typedef struct
 {
-    tNodo  *pri,
+    lNodo  *pri,
            *ult;
 } tCola;
 

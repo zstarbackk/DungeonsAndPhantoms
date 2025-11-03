@@ -1,0 +1,55 @@
+# depslib dependency file v1.0
+1761144901 source:c:\users\laboratorios\desktop\arbol\arbol.c
+	"arbol.h"
+
+1761144379 c:\users\laboratorios\desktop\arbol\arbol.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1761132201 source:c:\users\laboratorios\desktop\arbol\funciones.c
+	"funciones.h"
+
+1761135677 c:\users\laboratorios\desktop\arbol\funciones.h
+	"arbol.h"
+
+1761144721 source:c:\users\laboratorios\desktop\arbol\main.c
+	"arbol.h"
+	"funciones.h"
+
+1761778215 source:c:\users\user\documents\github\listasimplementeenlazada\ayed\arbol\arbol.c
+	"arbol.h"
+
+1761777605 c:\users\user\documents\github\listasimplementeenlazada\ayed\arbol\arbol.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1761778590 source:c:\users\user\documents\github\listasimplementeenlazada\ayed\arbol\funciones.c
+	"funciones.h"
+
+1761776236 c:\users\user\documents\github\listasimplementeenlazada\ayed\arbol\funciones.h
+	"arbol.h"
+
+1761777648 source:c:\users\user\documents\github\listasimplementeenlazada\ayed\arbol\main.c
+	"arbol.h"
+	"funciones.h"
+
+1761829898 source:c:\users\compu\documents\github\listasimplementeenlazada\arbol\arbol.c
+	"arbol.h"
+
+1761829664 c:\users\compu\documents\github\listasimplementeenlazada\arbol\arbol.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1761831503 source:c:\users\compu\documents\github\listasimplementeenlazada\arbol\funciones.c
+	"funciones.h"
+
+1761831496 c:\users\compu\documents\github\listasimplementeenlazada\arbol\funciones.h
+	"arbol.h"
+
+1761831597 source:c:\users\compu\documents\github\listasimplementeenlazada\arbol\main.c
+	"arbol.h"
+	"funciones.h"
+
