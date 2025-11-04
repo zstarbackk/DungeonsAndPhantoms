@@ -1,93 +1,120 @@
 #include "funciones.h"
 
-
-void crearLote(){
-    tPersona personas[] = { {45, "nahuel", 'm'},
-                            {12, "maria", 'f'},
-                            {98, "fernando", 'm'},
-                            {11,"Alejandro",'m'},
-                            {54,"Miriam",'f'},
-                            {85,"Alejandra",'f'},
-                            {23,"Paredes",'m'},
-                            {99,"Lionel",'m'},
-                            {53,"Emiliano",'m'},
-                            {76,"Morena",'f'},
-                            {51,"Jorge",'m'},
-                            {34,"Marchesin",'m'},
-                            {10,"Mauricio",'m'},
-                            {91,"Cristina",'f'},
-                            {44,"Almiron",'m'},
-                            {22,"Julia",'f'},
-                            {35,"Juliana",'f'},
-                            {74,"Malena",'f'},
-                            {13,"Joel",'m'},
-                            {23,"Mauro",'m'},
-                            {66,"Martina",'f'},
-                            {15,"Nestor",'m'},
-                            {93,"Gaby",'f'},
-                            {17,"cande",'f'},
-                            {95,"mateo",'m'},
-                            };
-    FILE *pf = fopen("datos.dat", "wb");
-    if(!pf) return;
-    fwrite(personas, sizeof(personas), 1, pf);
-    fclose(pf);
-}
-
-int compararInt(const void*d1, const void*d2){
-    return (*(int*)d1 - *(int*)d2);
-}
-void mostrarInt(void *d){
-    printf("[%d]", *(int*)d);
-}
-
-int leerDatosArchivoPer(void* dest, FILE *arch, void *param){
-    tPersona per;
-    tIndicePersona ind;
+int leerDatosArchivoUsuario(void* dest, FILE *arch, void *param){
+    tUsuario usuario;
+    tIndiceUsuarioNombre ind;
     ind.offset = ftell(arch);
 
-    if(fread(&per, sizeof(tPersona), 1, arch)){
-        ind.dni = per.dni;
-        memcpy(dest, &ind, sizeof(tIndicePersona));
-        return sizeof(tIndicePersona);
+    if(fread(&usuario, sizeof(tUsuario), 1, arch)){
+        ind.id = usuario.id;
+        strcpy(ind.usuario, usuario.usuario);
+        memcpy(dest, &ind, sizeof(tIndiceUsuarioNombre));
+        return sizeof(tIndiceUsuarioNombre);
     }
     else{
         return 0;
     }
 }
-int compararIndPer(const void*d1, const void*d2){
-    tIndicePersona *per1 = (tIndicePersona*)d1, *per2 = (tIndicePersona*)d2;
-    return (per1->dni - per2->dni);
+int leerDatosArchivoPartida(void* dest, FILE *arch, void *param){
+    tPartida partida;
+    tIndicePartida ind;
+    ind.offset = ftell(arch);
+
+    if(fread(&partida, sizeof(tPartida), 1, arch)){
+        ind.id=partida.id;
+        ind.puntaje = partida.puntaje;
+        memcpy(dest, &ind, sizeof(tIndicePartida));
+        return sizeof(tIndicePartida);
+    }
+    else{
+        return 0;
+    }
 }
-int compararClaveConIndPer(const void *clave, const void *ind){
-    tIndicePersona *per = (tIndicePersona*)ind;
-    return (*(int*)clave - per->dni);
+int compararIndPar(const void*d1, const void *d2){
+    tIndicePartida * par1 = (tIndicePartida*)d1;
+    tIndicePartida * par2 = (tIndicePartida*)d2;
+    int aux;
+    aux = par1->puntaje-par2->puntaje;
+    if(aux!=0)
+        return aux;
+    return par1->id -par2->id;
 }
-int leerDatosArchivoIdx(void* dest, FILE *arch, void *param){
+int compararIndPer(const void*d1, const void *d2){
+    tIndiceUsuarioNombre * usr1 = (tIndiceUsuarioNombre*)d1;
+    tIndiceUsuarioNombre * usr2 = (tIndiceUsuarioNombre*)d2;
+    return strcmp(usr1->usuario, usr2->usuario);
+}
+int leerDatosIdxUsuario(void* dest, FILE *arch, void *param){
     int med = *(int*)param;
 
-    fseek(arch, med * sizeof(tIndicePersona), SEEK_SET);
+    fseek(arch, med * sizeof(tIndiceUsuarioNombre), SEEK_SET);
 
-    if(fread(dest, sizeof(tIndicePersona), 1, arch))
-        return sizeof(tIndicePersona);
+    if(fread(dest, sizeof(tIndiceUsuarioNombre), 1, arch))
+        return sizeof(tIndiceUsuarioNombre);
     else
         return 0;
 }
+int leerDatosIdxPartida(void* dest, FILE *arch, void *param){
+    int med = *(int*)param;
 
-void mostrarPersonaIdx(void *d){
-    tIndicePersona *per = (tIndicePersona*)d;
-    printf("[%ld]", per->dni);
+    fseek(arch, med * sizeof(tIndicePartida), SEEK_SET);
+
+    if(fread(dest, sizeof(tIndicePartida), 1, arch))
+        return sizeof(tIndicePartida);
+    else
+        return 0;
 }
-int leerDatosArchivoPerConIdx(void* dest, FILE *arch, void *param){
-    tIndicePersona *pIdx = (tIndicePersona*)param;
-    fseek(arch, pIdx->offset, SEEK_SET);
-    return fread(dest, sizeof(tPersona), 1, arch);
+void crearArchivos(){
+    tUsuario usuarios[] = {
+        {1,"zstarback","qcyo123",230,1},
+        {2,"nabulecho","vllc",0,0},
+        {3,"diegxm","pollera",500,1},
+        {4,"tiagopijita","qcyo123",0,0},
+        {5,"bananirou","digodigo",5000,1}
+    };
+    tPartida partida[] ={
+        {1,"zstarnack",230,20},
+        {2,"nabulecho",500,10},
+        {3,"diegxm",5000,400}
+    };
+    FILE * fUsuarios = fopen("usuarios.dat","wb");
+    if(fUsuarios==NULL)
+        return;
+    FILE * fPartida = fopen("partida.dat","wb");
+    if(fPartida==NULL) {
+        fclose(fUsuarios);
+        return;
+    }
+
+    fwrite(partida, sizeof(partida),1,fPartida);
+
+    fwrite(usuarios,sizeof(usuarios),1,fUsuarios);
+
+    fclose(fUsuarios);
+    fclose(fPartida);
 }
-
-
-
-
-
-
-
-
+int buscarUsuario(char * nombre, char * text){
+    return 1;
+}
+int darDeAlta(char * usuario, char * contrasenia){
+    tUsuario user;
+    FILE * pf = fopen("usuarios.dat", "ab");
+    if(pf==NULL){
+        return 0;
+    }
+    strcpy(user.usuario, usuario);
+    strcpy(user.contrasenia, contrasenia);
+    user.puntosTotales = 0;
+    user.cantPartidas = 0;
+    fwrite(&user, sizeof(tUsuario), 1, pf);
+    fclose(pf);
+    return 1;
+}
+void mostrarUsuario(void* el){
+    tIndiceUsuarioNombre *usr = (tIndiceUsuarioNombre*)el;
+    printf("%s\n", usr->usuario);
+}
+void mostrarRanked(void* el){
+    tIndicePartida *part = (tIndicePartida*)el;
+    printf("%d\n", part->puntaje);
+}

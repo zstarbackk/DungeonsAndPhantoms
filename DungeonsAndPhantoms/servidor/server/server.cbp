@@ -42,6 +42,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="indice/arbol/arbol.h" />
+		<Unit filename="indice/arbol/funciones.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="indice/arbol/funciones.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>

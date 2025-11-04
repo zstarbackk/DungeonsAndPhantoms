@@ -8,33 +8,10 @@
 #include <winsock2.h>
 #include <stdlib.h>
 #include "cola.h"
-#include "indice//arbol//arbol.h"
+#include "indice/arbol/arbol.h"
+#include "indice/arbol/funciones.h"
 #define PORT 12345
 #define BUFFER_SIZE 2048
-typedef struct{
-    int id;
-    char usuario[16];
-    char contrasenia[16];
-    unsigned puntosTotales;
-    int cantPartidas;
-}tUsuario;
-typedef struct{
-    int id;
-    int usuarioId;
-    unsigned puntaje;
-    int movimientos;
-}tPartida;
-typedef struct {
-    char usuario[16];
-    int id;
-    unsigned offset;
-}tIndiceUsuarioNombre;
-typedef struct{
-    unsigned puntaje;
-    unsigned id;
-    unsigned offset;
-}tIndicePartida;
-void crearArchivos();
 
 // Inicializa Winsock
 int initWinsock();
@@ -55,15 +32,4 @@ void getRank(char * text);
 void getStats(char * text);
 void postGame(char * text);
 
-int leerDatosArchivoUsuario(void* dest, FILE *arch, void *param);
-int leerDatosArchivoPartida(void* dest, FILE *arch, void *param);
-
-int compararIndPar(const void*d1, const void *d2);
-int compararIndPer(const void*d1, const void *d2);
-int leerDatosIdxUsuario(void* dest, FILE *arch, void *param);
-int leerDatosIdxPartida(void* dest, FILE *arch, void *param);
-
-
-void mostrarUsuario(void* el);
-void mostrarRanked(void* el);
 #endif // SERVERLIB_H_INCLUDED
