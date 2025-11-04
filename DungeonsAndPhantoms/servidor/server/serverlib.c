@@ -6,6 +6,7 @@ int leerDatosArchivoUsuario(void* dest, FILE *arch, void *param){
 
     if(fread(&usuario, sizeof(tUsuario), 1, arch)){
         ind.id = usuario.id;
+        strcpy(ind.usuario, usuario.usuario);
         memcpy(dest, &ind, sizeof(tIndiceUsuarioNombre));
         return sizeof(tIndiceUsuarioNombre);
     }
@@ -20,8 +21,6 @@ int leerDatosArchivoPartida(void* dest, FILE *arch, void *param){
 
     if(fread(&partida, sizeof(tPartida), 1, arch)){
         ind.id=partida.id;
-        ind.idUsuario=partida.usuarioId;
-        ind.movimientos= partida.movimientos;
         ind.puntaje = partida.puntaje;
         memcpy(dest, &ind, sizeof(tIndicePartida));
         return sizeof(tIndicePartida);
@@ -36,8 +35,6 @@ int compararIndPar(const void*d1, const void *d2){
     int aux;
     aux = par1->puntaje-par2->puntaje;
     if(aux!=0)
-        return aux;
-    if((aux=par1->movimientos-par2->movimientos)!=0)
         return aux;
     return par1->id -par2->id;
 }
@@ -67,7 +64,6 @@ int leerDatosIdxPartida(void* dest, FILE *arch, void *param){
         return 0;
 }
 void crearArchivos(){
-    int i;
     tUsuario usuarios[] = {
         {1,"zstarback","qcyo123",230,1},
         {2,"nabulecho","vllc",0,0},
@@ -88,12 +84,11 @@ void crearArchivos(){
         fclose(fUsuarios);
         return;
     }
-    for(i = 0; i< sizeof(partida)/sizeof(tPartida);i++){
-        fwrite(&partida[i], sizeof(tPartida),1,fPartida);
-    }
-    for(i = 0; i <sizeof(usuarios)/sizeof(tUsuario);i++){
-        fwrite(&usuarios[i],sizeof(tUsuario),1,fUsuarios);
-    }
+
+    fwrite(partida, sizeof(partida),1,fPartida);
+
+    fwrite(usuarios,sizeof(usuarios),1,fUsuarios);
+
     fclose(fUsuarios);
     fclose(fPartida);
 }
@@ -110,11 +105,17 @@ int darDeAlta(char * usuario, char * contrasenia){
     strcpy(user.contrasenia, contrasenia);
     user.puntosTotales = 0;
     user.cantPartidas = 0;
+    fwrite(&user, sizeof(tUsuario), 1, pf);
+    fclose(pf);
     return 1;
 }
 void mostrarUsuario(void* el){
     tIndiceUsuarioNombre *usr = (tIndiceUsuarioNombre*)el;
-    printf("\n%s", usr->usuario);
+    printf("%s\n", usr->usuario);
+}
+void mostrarRanked(void* el){
+    tIndicePartida *part = (tIndicePartida*)el;
+    printf("%d\n", part->puntaje);
 }
 ///Funciones auxiliares
 void login(tArbol *indice, char * text){
@@ -132,8 +133,8 @@ void login(tArbol *indice, char * text){
     aux = buscarUsuario(usuario, contrasenia);
     switch (aux) {
         case -1:
-            while(darDeAlta(usuario, contrasenia) == 0&& intentos >0){
-                intentos++;
+            while(darDeAlta(usuario, contrasenia) == 0 && intentos > 0){
+                intentos--;
             }
 
             strcpy(text, "R");
@@ -241,8 +242,14 @@ void runServer(tArbol *iUsuario, tArbol *iRanked)
         fclose(fileUsuario);
         return;
     }
+
+    crearArbolB(&indiceRanked);
+    crearArbolB(&indiceUsuario);
+
     cargarArbolDesdeArchivoOrdenado(&indiceUsuario,fileUsuario,sizeof(tIndiceUsuarioNombre),leerDatosIdxUsuario);
     cargarArbolDesdeArchivoOrdenado(&indiceRanked, fileRanking, sizeof(tIndicePartida), leerDatosIdxPartida);
+    recorrerArbolInOrden(&indiceRanked, mostrarRanked);
+
     int CantidadPeticionesBackup = 0;
 
     if (initWinsock() != 0)

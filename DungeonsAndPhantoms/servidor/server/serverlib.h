@@ -31,9 +31,7 @@ typedef struct {
 }tIndiceUsuarioNombre;
 typedef struct{
     unsigned puntaje;
-    int movimientos;
     unsigned id;
-    unsigned idUsuario;
     unsigned offset;
 }tIndicePartida;
 void crearArchivos();
@@ -67,4 +65,5 @@ int leerDatosIdxPartida(void* dest, FILE *arch, void *param);
 
 
 void mostrarUsuario(void* el);
+void mostrarRanked(void* el);
 #endif // SERVERLIB_H_INCLUDED

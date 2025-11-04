@@ -51,7 +51,4 @@ int crearArchivoIndice(const char* nombArchDat, const char* nombArchInd, unsigne
 int cargarArbolDesdeArchivoOrdenado(tArbol *p, FILE *pf, unsigned tam, LEER leer);
 int __cargarArbolDesdeArchivoOrdenado(tArbol *p, FILE *pf, unsigned tam, int li, int ls, LEER leer);
 int buscarEnArbolIndice(tArbol *p, void *dato, const void *clave, FILE *pf, LEER leer, CMP cmp);
-///Contar Hojas, Contar No Hojas, Cuantos Nodos Tiene Un Arbol, Clave Mayor, Clave Menor, Cantidad Nodos
-///Del Sub Arbol Derecho Que Cumple Una Condicion, Cantidad De Nodos Que Cumplen Una Condicion a Partir De Una Clave,
-///Promedio de los Nodos Con Clave Parcial, Buscar Un Valor No Clave Del Arbol Con Accion (Pueden Ser Varios).
 #endif // ARBOL_H_INCLUDED

@@ -62,3 +62,41 @@
 	<stdlib.h>
 	<string.h>
 
+1762191638 source:c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\servidor\server\cola.c
+	"cola.h"
+
+1762191638 c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\servidor\server\cola.h
+	<stdlib.h>
+	<string.h>
+
+1762283908 source:c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\servidor\server\indice\arbol\arbol.c
+	"arbol.h"
+
+1762282915 c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\servidor\server\indice\arbol\arbol.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1762283439 source:c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\servidor\server\main.c
+	<stdio.h>
+	<stdlib.h>
+	"serverlib.h"
+
+1762284162 c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\servidor\server\serverlib.h
+	<ctype.h>
+	<stdio.h>
+	<string.h>
+	<time.h>
+	<winsock2.h>
+	<stdlib.h>
+	"cola.h"
+	"indice//arbol//arbol.h"
+
+1762282915 c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\servidor\server\indice\\arbol\\arbol.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1762284199 source:c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\servidor\server\serverlib.c
+	"serverlib.h"
+

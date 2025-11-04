@@ -89,13 +89,7 @@ int alturaArbol(tArbol *p){
     if(!*p)return 0;
     return (1 + MAX(alturaArbol(&(*p)->der), alturaArbol(&(*p)->izq)));
 }
-//int alturaArbol(tArbol *p){
-//    int altDer, altIzq;
-//    if(!*p)return 0;
-//    altDer = alturaArbol(&(*p)->der);
-//    altIzq = alturaArbol(&(*p)->izq);
-//    return (1 + MAX(altIzq, altDer));
-//}
+
 ///Incluido el nivel
 void verHastaNivel(tArbol *p, int nivel, void acc(void *)){
     if(!*p || nivel == -1) return;
@@ -239,7 +233,7 @@ int cargarArbolDesdeArchivoDesordenado(tArbol *p, FILE *pf, unsigned tam, LEER l
     if(!info){
         return 0;
     }
-    while((leido = leer(info, pf, &tam)) > 0){
+    while((leido = leer(info, pf, &tam)) == tam){
         insertarEnArbolBRec(p, info, leido, cmp);
     }
     free(info);
@@ -305,10 +299,7 @@ int __cargarArbolDesdeArchivoOrdenado(tArbol *p, FILE *pf, unsigned tam, int li,
 
     return 1;
 }
-//int buscarEnArbolIndice(tArbol *p, void *dato, const void *clave, FILE *pf, LEER leer){
-//    tArbol *pBuscado = buscarNodo(p, clave, cmp);
-//
-//}
+
 int buscarEnArbolIndice(tArbol *p, void *dato, const void *clave, FILE *pf, LEER leer, CMP cmp){
     tArbol *pBuscado = buscarNodo(p, clave, cmp);
     if(!pBuscado) return 0;
