@@ -4,11 +4,12 @@
 
 int main()
 {
-    crearArchivos();
+    ///comentar si se desea perdudar resultados
+    //crearArchivos();
 
     if(chequearEstado() == 0){
-        crearArchivoIndice("usuarios.dat","usuariosNombre.idx",sizeof(tIndiceUsuarioNombre), leerDatosArchivoUsuario, compararIndPer);
-        crearArchivoIndice("partida.dat","partidas.idx", sizeof(tIndicePartida), leerDatosArchivoPartida, compararIndPar);
+        crearArchivoIndice("usuarios.dat","usuariosNombre.idx",sizeof(tIndiceUsuarioNombre), leerDatosArchivoUsuarioParaIdx, compararIndUsu);
+        crearArchivoIndice("partidas.dat","partidas.idx", sizeof(tIndicePartida), leerDatosArchivoPartida, compararIndPar);
         printf("Se recuperaron los indices afectados por el cierre inesperado...\n\n");
     }
     runServer();

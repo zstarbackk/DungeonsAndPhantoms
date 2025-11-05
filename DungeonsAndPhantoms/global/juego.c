@@ -17,7 +17,7 @@ char menu(const char *msj, const char *opc){
 }
 
 void menuPrincipal(){
-    char nomUsuario[25], buff[BUFFER_SIZE];
+    char nomUsuario[16], buff[BUFFER_SIZE], req[30];
     char opc;
     SOCKET sock = iniciarConexion();
     if(sock != INVALID_SOCKET){
@@ -36,7 +36,8 @@ void menuPrincipal(){
                     system("pause");
                     break;
                 case '3':
-                    send_request(sock, "STATS", buff);
+                    sprintf(req, "STATS %s", nomUsuario);
+                    send_request(sock, req, buff);
                     printf("Estadisticas del jugador %s\n", nomUsuario);
                     printf("%s\n", buff);
                     system("pause");
@@ -58,7 +59,7 @@ void menuPrincipal(){
                 iniciarJuego(INVALID_SOCKET, nomUsuario);
         }while(opc != '2');
     }
-
+    send_request(sock, "FINAL Disconect", buff);
     close_connection(sock);
 }
 int iniciarJuego(SOCKET sock, const char *nomUsu){

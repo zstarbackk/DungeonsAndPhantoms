@@ -57,117 +57,17 @@ int insertarEnArbolBIt(tArbol *p, void *dato, unsigned tam, CMP cmp){
     return 1;
 
 }
-void recorrerArbolInOrden(tArbol *p, void acc(void*)){
-    if(!*p) return;
-    recorrerArbolInOrden(&(*p)->izq, acc);
-    acc((*p)->dato);
-    recorrerArbolInOrden(&(*p)->der, acc);
-}
-void recorrerArbolPosOrden(tArbol *p, void acc(void*)){
-    if(!*p) return;
-    recorrerArbolPosOrden(&(*p)->izq, acc);
-    recorrerArbolPosOrden(&(*p)->der, acc);
-    acc((*p)->dato);
-}
-void recorrerArbolPreOrden(tArbol *p, void acc(void*)){
-    if(!*p) return;
-    acc((*p)->dato);
-    recorrerArbolPreOrden(&(*p)->izq, acc);
-    recorrerArbolPreOrden(&(*p)->der, acc);
-}
-int contarHojas(tArbol *p){
-    if(!*p) return 0;
-    if((*p)->izq == NULL && (*p)->der == NULL) return 1;
-    return (contarHojas(&(*p)->izq) + contarHojas(&(*p)->der));
-}
-int contarNoHojas(tArbol *p){
-    if(!*p) return 0;
-    if((*p)->izq == NULL && (*p)->der == NULL) return 0;
-    return (1 + contarHojas(&(*p)->izq) + contarHojas(&(*p)->der));
-}
+
 int alturaArbol(tArbol *p){
     if(!*p)return 0;
     return (1 + MAX(alturaArbol(&(*p)->der), alturaArbol(&(*p)->izq)));
 }
 
-///Incluido el nivel
-void verHastaNivel(tArbol *p, int nivel, void acc(void *)){
-    if(!*p || nivel == -1) return;
-    acc((*p)->dato);
-    verHastaNivel(&(*p)->izq, nivel - 1, acc);
-    verHastaNivel(&(*p)->der, nivel - 1, acc);
-}
-void verNodosDeNivel(tArbol *p, int nivel, void acc(void *)){
-    if(!*p) return;
-    if(nivel == 0){
-        acc((*p)->dato);
-        return;
-    }
-    verNodosDeNivel(&(*p)->izq, nivel - 1, acc);
-    verNodosDeNivel(&(*p)->der, nivel - 1, acc);
-}
-///Incluido el nivel
-void verNodosDesdeNivel(tArbol *p, int nivel, void acc(void*)){
-    if(!*p) return;
-    if(nivel <= 0) acc((*p)->dato);
-    verNodosDesdeNivel(&(*p)->izq, nivel - 1, acc);
-    verNodosDesdeNivel(&(*p)->der, nivel - 1, acc);
-}
-tArbol* mayorHojaIt(tArbol *p){
-    if(!*p) return NULL;
-    while((*p)->der || (*p)->izq){
-        while((*p)->der)
-            p = &(*p)->der;
-        if((*p)->izq)
-            p = &(*p)->izq;
-    }
-    return p;
-}
-tArbol* mayorHojaRec(tArbol *p){
-    if(!*p) return NULL;
-    if(!(*p)->der && !(*p)->izq) return p;
-    if(!(*p)->der) p = &(*p)->izq;
-    return mayorHojaRec(&(*p)->der);
-}
-tArbol* menorHojaIt(tArbol *p){
-    if(!*p) return NULL;
-    while((*p)->der || (*p)->izq){
-        while((*p)->izq)
-            p = &(*p)->izq;
-        if((*p)->der)
-            p = &(*p)->der;
-    }
-    return p;
-}
-tArbol* menorHojaRec(tArbol *p){
-    if(!*p) return NULL;
-    if(!(*p)->der && !(*p)->izq) return p;
-    if(!(*p)->izq) p = &(*p)->der;
-    return menorHojaRec(&(*p)->izq);
-}
 int contarNodos(tArbol *p){
     if(!*p) return 0;
     return (1 + contarNodos(&(*p)->der) + contarNodos(&(*p)->izq));
 }
-int esArbolBalanceado(tArbol *p){
-    int altDer, altIzq;
-    if(!*p) return 1;
-    altIzq = alturaArbol(&(*p)->izq);
-    altDer = alturaArbol(&(*p)->der);
-    if(altIzq != altDer && altIzq != (altDer + 1) && (altIzq + 1) != altDer)
-        return 0;
-    return (esArbolBalanceado(&(*p)->izq) && esArbolBalanceado(&(*p)->der));
-}
 
-int esArbolCompleto(tArbol *p){
-    if(!*p) return 1;
-    if(alturaArbol(&(*p)->izq) != alturaArbol(&(*p)->der)) return 0;
-    return (esArbolCompleto(&(*p)->izq) && esArbolCompleto(&(*p)->der));
-}
-
-//int esArbolAVL(tArbol *p){
-//
-//}
 void vaciarArbol(tArbol *p){
     if(!*p) return;
     vaciarArbol(&(*p)->izq);
@@ -187,6 +87,22 @@ tArbol* buscarNodo(tArbol *p, const void *clave, CMP cmp){
         }
         else{
             return buscarNodo(&(*p)->der, clave, cmp);
+        }
+    }
+}
+int buscarNodo2(tArbol *p, void *dato, const void *clave, unsigned tam, CMP cmp){
+    int comp;
+    if(!*p) return 0;
+    if((comp = cmp(clave, (*p)->dato)) == 0){
+        memcpy(dato, (*p)->dato, MIN(tam, (*p)->tam));
+        return 1;
+    }
+    else{
+        if(comp < 0){
+            return buscarNodo2(&(*p)->izq, dato, clave, tam, cmp);
+        }
+        else{
+            return buscarNodo2(&(*p)->der, dato, clave, tam, cmp);
         }
     }
 }
@@ -308,4 +224,16 @@ int buscarEnArbolIndice(tArbol *p, void *dato, const void *clave, FILE *pf, LEER
 }
 
 
+int verNodo(tArbol *p, void *dato, unsigned tam){
+    if(!*p) return 0;
+    memcpy(dato, (*p)->dato, MIN(tam, (*p)->tam));
+    return 1;
+}
 
+int verMenorNodo(tArbol *p, void *dato, unsigned tam){
+    if(!*p) return 0;
+    while((*p)->izq != NULL)
+        p = &(*p)->izq;
+    memcpy(dato, (*p)->dato, MIN(tam, (*p)->tam));
+    return 1;
+}

@@ -20,16 +20,18 @@ int initWinsock();
 SOCKET crearServerSocket();
 
 // Procesa el mensaje recibido y genera la respuesta
-void procesarRequest(tArbol* indiceUsuario, tArbol* indiceRanked, const char *request, char *response);
 
+void procesarRequest(tArbol *indiceUsuario, tArbol *indiceRanked, const char *request,
+                     char *response, FILE *fRank, FILE *fUsuarios);
 // Ejecuta el bucle principal del servidor
 void runServer();
 ///
 void avisarSeCerroBien();
 int chequearEstado();
-void login(tArbol *indice, char * text);
-void getRank(char * text);
-void getStats(char * text);
-void postGame(char * text);
+void login(char * text, tArbol *indice, FILE *pf);
+void getRank(char * text, tArbol *p, FILE *pf);
+void __getRank(char * text, tArbol *p, FILE *pf);
+void getStats(char * text, tArbol *p, FILE *pf);
+void postGame(char * text, tArbol *pArbolIdxPart, FILE *fRank, tArbol *pArbolIdxUsua, FILE *fUsuario);
 
 #endif // SERVERLIB_H_INCLUDED

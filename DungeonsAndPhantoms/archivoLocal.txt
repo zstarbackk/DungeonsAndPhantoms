@@ -1,8 +1,1 @@
-Nahuel|40|174
-Nahuel|40|90
-Nahuel|40|83
-Nahuel|90|126
-Tito|80|239
-Facu|30|24
-Lito|10|17
-Lucho|10|23
+nahuel|30|69

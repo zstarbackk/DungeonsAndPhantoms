@@ -69,20 +69,20 @@
 	<stdlib.h>
 	<string.h>
 
-1762283908 source:c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\servidor\server\indice\arbol\arbol.c
+1762305100 source:c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\servidor\server\indice\arbol\arbol.c
 	"arbol.h"
 
-1762282915 c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\servidor\server\indice\arbol\arbol.h
+1762300948 c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\servidor\server\indice\arbol\arbol.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 
-1762283439 source:c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\servidor\server\main.c
+1762302086 source:c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\servidor\server\main.c
 	<stdio.h>
 	<stdlib.h>
 	"serverlib.h"
 
-1762284162 c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\servidor\server\serverlib.h
+1762307916 c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\servidor\server\serverlib.h
 	<ctype.h>
 	<stdio.h>
 	<string.h>
@@ -90,13 +90,21 @@
 	<winsock2.h>
 	<stdlib.h>
 	"cola.h"
-	"indice//arbol//arbol.h"
+	"indice/arbol/arbol.h"
+	"indice/arbol/funciones.h"
 
 1762282915 c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\servidor\server\indice\\arbol\\arbol.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 
-1762284199 source:c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\servidor\server\serverlib.c
+1762308053 source:c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\servidor\server\serverlib.c
 	"serverlib.h"
+
+1762306163 source:c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\servidor\server\indice\arbol\funciones.c
+	"funciones.h"
+
+1762304189 c:\users\user\documents\github\dungeonsandphantoms\dungeonsandphantoms\servidor\server\indice\arbol\funciones.h
+	"arbol.h"
+	"../../serverlib.h"
 

@@ -72,7 +72,7 @@ void iniciarSesion(SOCKET sock, char *nomUsu){
 
     strcpy(nomUsu, nom);
 
-    if(strcmp(res, "R"))
+    if(strcmp(res, "R") == 0)
         printf("Se ha registrado el usuario correctamente\n");
     else
         printf("Se ha iniciado sesion correctamente\n");
