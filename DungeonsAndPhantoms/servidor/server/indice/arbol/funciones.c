@@ -54,39 +54,22 @@ int compararIndUsuClave(const void*d1, const void *d2){
     tIndiceUsuarioNombre *usr = (tIndiceUsuarioNombre*)d2;
     return strcmp(nombre, usr->usuario);
 }
-int leerDatosIdxUsuario(void* dest, FILE *arch, void *param){
-    int med = *(int*)param;
-
-    fseek(arch, med * sizeof(tIndiceUsuarioNombre), SEEK_SET);
-
-    if(fread(dest, sizeof(tIndiceUsuarioNombre), 1, arch) == sizeof(tIndiceUsuarioNombre))
-        return sizeof(tIndiceUsuarioNombre);
-    else
-        return 0;
-}
-int leerDatosIdxPartida(void* dest, FILE *arch, void *param){
-    int med = *(int*)param;
-
-    fseek(arch, med * sizeof(tIndicePartida), SEEK_SET);
-
-    if(fread(dest, sizeof(tIndicePartida), 1, arch) == sizeof(tIndicePartida))
-        return sizeof(tIndicePartida);
-    else
-        return 0;
-}
 void crearArchivos(){
     FILE *fUsuarios, *fPartida;
     tUsuario usuarios[] = {
-        {1,"zstarback","qcyo123",230,1},
-        {2,"nabulecho","vllc",0,0},
-        {3,"diegxm","pollera",500,1},
-        {4,"tiagopijita","qcyo123",0,0},
-        {5,"bananirou","digodigo",5000,1}
+        {1,"zstarback","contrasenia1",230,1},
+        {2,"nabulecho","contrasenia2",500,1},
+        {3,"diegxm","contrasenia4",5250,3},
+        {4,"montapuercos","contrasenia5",0,0},
+        {5,"bananirou","contrasenia6",1000,1}
     };
     tPartida partida[] ={
         {1,"zstarnack",230,20},
         {2,"nabulecho",500,10},
-        {3,"diegxm",5000,400}
+        {3,"diegxm",5000,400},
+        {4,"bananirou",1000,40},
+        {5,"diegxm",200,10},
+        {6,"diegxm",50,4}
     };
     fUsuarios = fopen("usuarios.dat","wb");
     if(!fUsuarios)
@@ -99,6 +82,11 @@ void crearArchivos(){
 
     fwrite(partida, sizeof(partida),1,fPartida);
     fwrite(usuarios,sizeof(usuarios),1,fUsuarios);
+
+    ///Si se vuelve a crear el lote de prueba se deben eliminar los viejos indices
+    remove("partidas.idx");
+    remove("usuariosNombre.idx");
+    remove("state.txt");
 
     fclose(fUsuarios);
     fclose(fPartida);
@@ -114,7 +102,7 @@ int buscarUsuario(tArbol *p, FILE *fUsuarios, char * nombre, char *contrasenia){
         return 0;
     return 1;
 }
-int darDeAlta(char * usuario, char * contrasenia, tArbol *pArbolIdxUsu,FILE *pf){
+int darDeAlta(char * usuario, char * contrasenia, tArbol *pArbolIdxUsu, FILE *pf){
     tUsuario user, aux;
     tIndiceUsuarioNombre idx;
     ///Lo agrego al archivo
@@ -124,7 +112,7 @@ int darDeAlta(char * usuario, char * contrasenia, tArbol *pArbolIdxUsu,FILE *pf)
     user.cantPartidas = 0;
     fseek(pf, -(long int)sizeof(tUsuario), SEEK_END);
     ///id autoincremental
-    if(fread(&aux, sizeof(tUsuario), 1, pf) == sizeof(tUsuario)){
+    if(fread(&aux, sizeof(tUsuario), 1, pf)){
        user.id = aux.id + 1;
     }
     else{

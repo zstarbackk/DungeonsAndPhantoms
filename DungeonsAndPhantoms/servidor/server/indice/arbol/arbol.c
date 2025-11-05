@@ -9,8 +9,9 @@ int insertarEnArbolBRec(tArbol *p, void *dato, unsigned tam, CMP cmp){
         *p = (tNodo*)malloc(sizeof(tNodo));
         if(!*p) return 0;
         (*p)->dato = malloc(tam);
-        if((*p)->dato == NULL){
+        if(!(*p)->dato){
             free(*p);
+            *p = NULL;
             return 0;
         }
         memcpy((*p)->dato, dato, tam);
@@ -144,13 +145,12 @@ void eliminarRaiz(tArbol *p){
 }
 int cargarArbolDesdeArchivoDesordenado(tArbol *p, FILE *pf, unsigned tam, LEER leer, CMP cmp){
     void *info;
-    int leido;
     info = malloc(tam);
     if(!info){
         return 0;
     }
-    while((leido = leer(info, pf, &tam)) == tam){
-        insertarEnArbolBRec(p, info, leido, cmp);
+    while(leer(info, pf, &tam) == tam){
+        insertarEnArbolBRec(p, info, tam, cmp);
     }
     free(info);
     return 1;
@@ -168,7 +168,7 @@ int crearArchivoIndice(const char* nombArchDat, const char* nombArchInd, unsigne
     tArbol arbol;
     FILE *pDat, *pInd;
 
-    pDat = fopen(nombArchDat, "r+b");
+    pDat = fopen(nombArchDat, "rb");
     if(!pDat) return 0;
     pInd = fopen(nombArchInd, "wb");
     if(!pInd){
@@ -177,23 +177,33 @@ int crearArchivoIndice(const char* nombArchDat, const char* nombArchInd, unsigne
     }
     crearArbolB(&arbol);
 
-    cargarArbolDesdeArchivoDesordenado(&arbol, pDat, tam, leer, cmp);
-    cargarArchivoDesdeArbol(&arbol, pInd);
+    if(!cargarArbolDesdeArchivoDesordenado(&arbol, pDat, tam, leer, cmp)){
+        fclose(pDat);
+        fclose(pInd);
+        vaciarArbol(&arbol);
+        return 0;
+    }
+    if(!cargarArchivoDesdeArbol(&arbol, pInd)){
+        fclose(pDat);
+        fclose(pInd);
+        vaciarArbol(&arbol);
+        return 0;
+    }
 
     fclose(pDat);
     fclose(pInd);
     vaciarArbol(&arbol);
     return 1;
 }
-int cargarArbolDesdeArchivoOrdenado(tArbol *p, FILE *pf, unsigned tam, LEER leer){
+int cargarArbolDesdeArchivoOrdenado(tArbol *p, FILE *pf, unsigned tam){
     int cantReg;
     if(!pf || *p) return 0;
     fseek(pf, 0, SEEK_END);
-    cantReg = (ftell(pf)/tam) - 1;
+    cantReg = (ftell(pf)/tam);
 
-    return __cargarArbolDesdeArchivoOrdenado(p, pf, tam, 0, cantReg, leer);
+    return __cargarArbolDesdeArchivoOrdenado(p, pf, tam, 0, cantReg - 1);
 }
-int __cargarArbolDesdeArchivoOrdenado(tArbol *p, FILE *pf, unsigned tam, int li, int ls, LEER leer){
+int __cargarArbolDesdeArchivoOrdenado(tArbol *p, FILE *pf, unsigned tam, int li, int ls){
     int med = (li+ls)/2;
 
     if(li > ls) return 1;
@@ -206,12 +216,20 @@ int __cargarArbolDesdeArchivoOrdenado(tArbol *p, FILE *pf, unsigned tam, int li,
         free(*p);
         return 0;
     }
-    if(!((*p)->tam = leer((*p)->dato, pf, &med))) return 1;
+    fseek(pf, med * tam, SEEK_SET);
+    if(!fread((*p)->dato, tam, 1, pf)){
+        free((*p)->dato);
+        free(*p);
+        return 1;
+    }
+    (*p)->tam = tam;
     (*p)->der = NULL;
     (*p)->izq = NULL;
 
-    __cargarArbolDesdeArchivoOrdenado(&(*p)->izq, pf, tam, li, med - 1, leer);
-    __cargarArbolDesdeArchivoOrdenado(&(*p)->der, pf, tam, med + 1, ls, leer);
+    if(!__cargarArbolDesdeArchivoOrdenado(&(*p)->izq, pf, tam, li, med - 1))
+        return 0;
+    if(!__cargarArbolDesdeArchivoOrdenado(&(*p)->der, pf, tam, med + 1, ls))
+        return 0;
 
     return 1;
 }

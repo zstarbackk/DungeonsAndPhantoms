@@ -37,8 +37,6 @@ int leerDatosArchivoPartida(void* dest, FILE *arch, void *param);
 int compararIndPar(const void*d1, const void *d2);
 int compararIndUsu(const void*d1, const void *d2);
 int compararIndUsuClave(const void*d1, const void *d2);
-int leerDatosIdxUsuario(void* dest, FILE *arch, void *param);
-int leerDatosIdxPartida(void* dest, FILE *arch, void *param);
 
 int buscarUsuario(tArbol *p, FILE *pf, char * nombre, char * text);
 int darDeAlta(char * usuario, char * contrasenia, tArbol *pArbolIdxUsu,FILE *pf);

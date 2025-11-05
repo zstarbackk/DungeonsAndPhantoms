@@ -15,17 +15,14 @@
 
 // Inicializa Winsock
 int initWinsock();
-
 // Crea el socket del servidor
 SOCKET crearServerSocket();
-
 // Procesa el mensaje recibido y genera la respuesta
-
-void procesarRequest(tArbol *indiceUsuario, tArbol *indiceRanked, const char *request,
-                     char *response, FILE *fRank, FILE *fUsuarios);
+void procesarRequest(tArbol *indiceUsuario, tArbol *indiceRanked, const char *request, char *response,
+                     FILE *fRank, FILE *fUsuarios);
 // Ejecuta el bucle principal del servidor
 void runServer();
-///
+
 void avisarSeCerroBien();
 int chequearEstado();
 void login(char * text, tArbol *indice, FILE *pf);

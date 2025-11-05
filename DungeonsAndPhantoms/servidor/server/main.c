@@ -4,8 +4,8 @@
 
 int main()
 {
-    ///comentar si se desea perdudar resultados
-    //crearArchivos();
+    ///Comentar si ya existen los archivos y se desea perdudar los resultados que se agregan
+    crearArchivos();
 
     if(chequearEstado() == 0){
         crearArchivoIndice("usuarios.dat","usuariosNombre.idx",sizeof(tIndiceUsuarioNombre), leerDatosArchivoUsuarioParaIdx, compararIndUsu);

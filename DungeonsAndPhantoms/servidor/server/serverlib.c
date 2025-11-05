@@ -3,7 +3,8 @@
 ///Funciones auxiliares
 void login(char * text, tArbol *iUsuario, FILE *fUsuario){
     char usuario[16], contrasenia[16];
-    int aux, intentos = 5;
+    int aux;
+
     if(sscanf(text, "%[^|]|%s",usuario, contrasenia)!=2){
         strcpy(text, "E");/// Error
         return;
@@ -13,11 +14,9 @@ void login(char * text, tArbol *iUsuario, FILE *fUsuario){
         Usuario encontrado, contrasenia correcta = 1
     */
     aux = buscarUsuario(iUsuario, fUsuario, usuario, contrasenia);
-    switch (aux) {
+    switch(aux){
         case -1:
-            while(darDeAlta(usuario, contrasenia, iUsuario,fUsuario) == 0 && intentos > 0){
-                intentos--;
-            }
+            darDeAlta(usuario, contrasenia, iUsuario,fUsuario);
             strcpy(text, "R");
             break;
         case 0:
@@ -34,6 +33,7 @@ void getRank(char * text, tArbol *p, FILE *pf){
     }
 
     __getRank(text, p, pf);
+
 }
 void __getRank(char * text, tArbol *p, FILE *pf){
     tIndicePartida idx;
@@ -41,7 +41,7 @@ void __getRank(char * text, tArbol *p, FILE *pf){
     char linea[50];
     if(!*p) return;
 
-    __getRank(text, &(*p)->izq, pf);
+    __getRank(text, &(*p)->der, pf);
 
     verNodo(p, &idx, sizeof(tIndicePartida));
     fseek(pf, idx.offset, SEEK_SET);
@@ -49,7 +49,7 @@ void __getRank(char * text, tArbol *p, FILE *pf){
     sprintf(linea, "%8d|%-16s|%8d|%8d\n", part.id, part.usuario, part.puntaje, part.movimientos);
     strcat(text, linea);
 
-    __getRank(text, &(*p)->der, pf);
+    __getRank(text, &(*p)->izq, pf);
 }
 void getStats(char * text, tArbol *p, FILE *pf){
     tUsuario usr;
@@ -62,48 +62,55 @@ void postGame(char * text, tArbol *pArbolIdxPart, FILE *fRank, tArbol *pArbolIdx
     tIndicePartida menorIdx, nueIdx;
     tUsuario usr;
     tIndiceUsuarioNombre idxUsu;
+
     sscanf(text, "%[^|]|%d|%d", part.usuario, &part.puntaje, &part.movimientos);
 
     fseek(fRank, -(long int)sizeof(tPartida), SEEK_END);
     ///Para la primer partida
-    if(fread(&aux, sizeof(tPartida), 1, fRank) < sizeof(tPartida))
-        part.id = 0;
-    else
+    if(fread(&aux, sizeof(tPartida), 1, fRank))
         part.id = aux.id + 1;
+    else
+        part.id = 0;
 
+    ///Guardo la partida
     fseek(fRank, 0L, SEEK_END);
     fwrite(&part, sizeof(tPartida), 1, fRank);
 
-    ///Me fijo si la partida actual es mayor a la menor partida
-    if(!verMenorNodo(pArbolIdxPart, &menorIdx, sizeof(tIndicePartida))){
+    ///Actualizo el indice de partidas
+    ///Solo muestras las 10 partidas con mas puntaje, si hay menos de 10 la inserta
+    if(contarNodos(pArbolIdxPart) < 10){
         nueIdx.id = part.id;
         nueIdx.puntaje = part.puntaje;
         nueIdx.offset = ftell(fRank) - sizeof(tPartida);
         insertarEnArbolBRec(pArbolIdxPart, &nueIdx, sizeof(tIndicePartida), compararIndPar);
     }
-    else {
+    else{
+        ///Si no se fija si la partida actual tiene mas puntos que la menor del idx
+        verMenorNodo(pArbolIdxPart, &menorIdx, sizeof(tIndicePartida));
         if(menorIdx.puntaje < part.puntaje){
             nueIdx.id = part.id;
             nueIdx.puntaje = part.puntaje;
             nueIdx.offset = ftell(fRank) - sizeof(tPartida);
             insertarEnArbolBRec(pArbolIdxPart, &nueIdx, sizeof(tIndicePartida), compararIndPar);
             ///El ranking muestra las 10 partidas con mayores puntajes
-            if(contarNodos(pArbolIdxPart) > 10){
-                eliminarNodo(pArbolIdxPart, &menorIdx.puntaje, &menorIdx, sizeof(tIndicePartida), compararIndPar);
-            }
+            eliminarNodo(pArbolIdxPart, &menorIdx.puntaje, &menorIdx, sizeof(tIndicePartida), compararIndPar);
         }
     }
+
     ///Actualizo el archivo de usuarios.dat
     if(!buscarNodo2(pArbolIdxUsua, &idxUsu, part.usuario, sizeof(tIndiceUsuarioNombre), compararIndUsuClave)){
         ///Por si se cargan datos guardados en local y el usuario no existia.
         darDeAlta(part.usuario, "12345", pArbolIdxUsua,fUsuario);
         buscarNodo2(pArbolIdxUsua, &idxUsu, part.usuario, sizeof(tIndiceUsuarioNombre), compararIndUsuClave);
     }
+
     fseek(fUsuario, idxUsu.offset, SEEK_SET);
     fread(&usr, sizeof(tUsuario), 1, fUsuario);
+
     usr.cantPartidas++;
     usr.puntosTotales += part.puntaje;
-    fseek(fUsuario, -(long int)sizeof(tUsuario), SEEK_CUR);
+
+    fseek(fUsuario, idxUsu.offset, SEEK_SET);
     fwrite(&usr, sizeof(tUsuario), 1, fUsuario);
 }
 
@@ -160,7 +167,7 @@ void procesarRequest(tArbol *indiceUsuario, tArbol *indiceRanked, const char *re
         getStats(text, indiceUsuario, fUsuarios);
         sprintf(response, "%s", text);
     }
-    else if (strcmp(operation, "POST") == 0)
+    else if (strcmp(operation, "POSTS") == 0)
     {
         postGame(text, indiceRanked, fRank, indiceUsuario, fUsuarios);
         sprintf(response,"Posteado con exito");
@@ -175,7 +182,7 @@ void procesarRequest(tArbol *indiceUsuario, tArbol *indiceRanked, const char *re
     }
 }
 
-void runServer(tArbol *iUsuario, tArbol *iRanked)
+void runServer()
 {
     char buffer[BUFFER_SIZE];
     char response[BUFFER_SIZE];
@@ -190,11 +197,11 @@ void runServer(tArbol *iUsuario, tArbol *iRanked)
     FILE *fUsuarioIdx, *fRankedIdx, *fRankedDat, *fUsuarioDat;
 
     ///Se crean los indices
-    fUsuarioIdx = fopen("usuariosNombre.idx","a+b");
+    fUsuarioIdx = fopen("usuariosNombre.idx","r+b");
     if(!fUsuarioIdx)
         return;
 
-    fRankedIdx = fopen("partidas.idx","a+b");
+    fRankedIdx = fopen("partidas.idx","r+b");
     if(!fRankedIdx){
         fclose(fUsuarioIdx);
         return;
@@ -203,11 +210,11 @@ void runServer(tArbol *iUsuario, tArbol *iRanked)
     crearArbolB(&indiceRanked);
     crearArbolB(&indiceUsuario);
 
-    cargarArbolDesdeArchivoOrdenado(&indiceUsuario,fUsuarioIdx,sizeof(tIndiceUsuarioNombre),leerDatosIdxUsuario);
-    cargarArbolDesdeArchivoOrdenado(&indiceRanked, fRankedIdx, sizeof(tIndicePartida), leerDatosIdxPartida);
+    cargarArbolDesdeArchivoOrdenado(&indiceUsuario,fUsuarioIdx,sizeof(tIndiceUsuarioNombre));
+    cargarArbolDesdeArchivoOrdenado(&indiceRanked, fRankedIdx, sizeof(tIndicePartida));
 
     ///Archivos con los datos
-    fUsuarioDat = fopen("usuarios.dat", "a+b");
+    fUsuarioDat = fopen("usuarios.dat", "r+b");
     if(!fUsuarioDat){
         fclose(fUsuarioIdx);
         fclose(fRankedIdx);
@@ -216,7 +223,7 @@ void runServer(tArbol *iUsuario, tArbol *iRanked)
         return;
     }
 
-    fRankedDat = fopen("partidas.dat", "a+b");
+    fRankedDat = fopen("partidas.dat", "r+b");
     if(!fRankedDat){
         fclose(fUsuarioIdx);
         fclose(fRankedIdx);
@@ -298,10 +305,13 @@ void runServer(tArbol *iUsuario, tArbol *iRanked)
             Sleep(100);
         }
         closesocket(client_socket);
-        printf("Esperando nuevo cliente...\n");
+        if(!cerrar)
+            printf("Esperando nuevo cliente...\n");
     }
 
     ///Se guardan los nuevos indices
+    rewind(fRankedIdx);
+    rewind(fUsuarioIdx);
     cargarArchivoDesdeArbol(&indiceRanked, fRankedIdx);
     cargarArchivoDesdeArbol(&indiceUsuario, fUsuarioIdx);
     avisarSeCerroBien();

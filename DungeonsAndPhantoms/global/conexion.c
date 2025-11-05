@@ -81,7 +81,7 @@ void iniciarSesion(SOCKET sock, char *nomUsu){
 
 int cargarResultados(SOCKET sock, const char* nomUsu, int puntaje, int cantMov){
     char req[50], res[10];
-    sprintf(req, "POST %s|%d|%d", nomUsu, puntaje, cantMov);
+    sprintf(req, "POSTS %s|%d|%d", nomUsu, puntaje, cantMov);
     send_request(sock, req, res);
     if(strcmp(res, "OK") == 0){
         return 1;
@@ -107,7 +107,7 @@ int cargarArchivoLocal(SOCKET sock){
     if(!pf) return 0;
     while(fgets(buff, sizeof(buff), pf)){
         sacarSalto(buff)
-        sprintf(req, "POST %s", buff);
+        sprintf(req, "POSTS %s", buff);
         send_request(sock, req, res);
     }
     fclose(pf);

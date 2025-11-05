@@ -32,6 +32,7 @@ void menuPrincipal(){
                 case '2':
                     send_request(sock, "RANKS", buff);
                     printf("Ranking de Jugadores de Dungeons And Phantoms\n");
+                    printf("%-8s|%-16s|%-8s|%-8s\n", "ID", "Usuario", "Puntaje", "Movimientos");
                     printf("%s", buff);
                     system("pause");
                     break;
