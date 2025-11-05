@@ -107,9 +107,9 @@ int iniciarJuego(SOCKET sock, const char *nomUsu){
     // Mostrar resultado final
     mostrarTablero(&laberinto, &estado);
     if (estado.vidas <= 0) {
-        printf("\n¡PERDISTE! Te quedaste sin vidas.\n");
+        printf("\nPERDISTE! Te quedaste sin vidas.\n");
     } else if (finJuego) {
-        printf("\n¡GANASTE! Llegaste a la salida con %d puntos.\n", estado.puntos);
+        printf("\nGANASTE! Llegaste a la salida con %d puntos.\n", estado.puntos);
     }
 
     printf("Puntos finales: %d\n", estado.puntos);
