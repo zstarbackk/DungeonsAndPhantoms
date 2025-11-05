@@ -14,6 +14,7 @@ void leerConfiguracion(tConfiguracion *config) {
         config->maxVidasExtra = 3;
         config->obstaculosEliminados = 0.1;
         printf("Usando configuración por defecto (archivo config.txt no encontrado)\n");
+        system("pause");
         return;
     }
 
